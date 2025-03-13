@@ -21,3 +21,6 @@ next-env.d.ts
 /supabase/.temp
 /supabase/.env
 .env*.local
+
+# auth
+auth.config.json

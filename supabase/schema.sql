@@ -87,6 +87,7 @@ SET default_table_access_method = "heap";
 CREATE TABLE IF NOT EXISTS "public"."data" (
     "id" "text" NOT NULL,
     "output" "text",
+    "input" "text",
     "failed" boolean,
     "created_at" timestamp with time zone DEFAULT "now"(),
     "user_id" "uuid" DEFAULT "auth"."uid"()
@@ -154,31 +155,31 @@ CREATE TABLE IF NOT EXISTS "public"."users" (
 
 ALTER TABLE "public"."users" OWNER TO "postgres";
 
-ALTER TABLE ONLY "public"."data"
-    ADD CONSTRAINT "data_pkey" PRIMARY KEY ("id");
+-- ALTER TABLE ONLY "public"."data"
+--     ADD CONSTRAINT "data_pkey" PRIMARY KEY ("id");
 
-ALTER TABLE ONLY "public"."prices"
-    ADD CONSTRAINT "prices_pkey" PRIMARY KEY ("id");
+-- ALTER TABLE ONLY "public"."prices"
+--     ADD CONSTRAINT "prices_pkey" PRIMARY KEY ("id");
 
-ALTER TABLE ONLY "public"."products"
-    ADD CONSTRAINT "products_pkey" PRIMARY KEY ("id");
+-- ALTER TABLE ONLY "public"."products"
+    -- ADD CONSTRAINT "products_pkey" PRIMARY KEY ("id");
 
-ALTER TABLE ONLY "public"."users"
-    ADD CONSTRAINT "users_pkey" PRIMARY KEY ("id");
+-- ALTER TABLE ONLY "public"."users"
+--     ADD CONSTRAINT "users_pkey" PRIMARY KEY ("id");
 
-CREATE OR REPLACE TRIGGER "customer" AFTER INSERT OR DELETE ON "public"."users" FOR EACH ROW EXECUTE FUNCTION "supabase_functions"."http_request"('https://extrapolate-new.vercel.app/api/webhooks/supabase/customer', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
+CREATE OR REPLACE TRIGGER "customer" AFTER INSERT OR DELETE ON "public"."users" FOR EACH ROW EXECUTE FUNCTION "supabase_functions"."http_request"('https://ai-aging-pied.vercel.app/api/webhooks/supabase/customer', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
 
-ALTER TABLE ONLY "public"."data"
-    ADD CONSTRAINT "data_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON UPDATE CASCADE ON DELETE SET NULL;
+-- ALTER TABLE ONLY "public"."data"
+--     ADD CONSTRAINT "data_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON UPDATE CASCADE ON DELETE SET NULL;
 
-ALTER TABLE ONLY "public"."users"
-    ADD CONSTRAINT "users_id_fkey" FOREIGN KEY ("id") REFERENCES "auth"."users"("id") ON UPDATE CASCADE ON DELETE CASCADE;
+-- ALTER TABLE ONLY "public"."users"
+--     ADD CONSTRAINT "users_id_fkey" FOREIGN KEY ("id") REFERENCES "auth"."users"("id") ON UPDATE CASCADE ON DELETE CASCADE;
 
-CREATE POLICY "Enable ALL for users based on user_id" ON "public"."data" TO "authenticated" USING ((( SELECT "auth"."uid"() AS "uid") = "user_id")) WITH CHECK ((( SELECT "auth"."uid"() AS "uid") = "user_id"));
+-- CREATE POLICY "Enable ALL for users based on user_id" ON "public"."data" TO "authenticated" USING ((( SELECT "auth"."uid"() AS "uid") = "user_id")) WITH CHECK ((( SELECT "auth"."uid"() AS "uid") = "user_id"));
 
-CREATE POLICY "Enable read access for all users" ON "public"."data" FOR SELECT USING (true);
+-- CREATE POLICY "Enable read access for all users" ON "public"."data" FOR SELECT USING (true);
 
-CREATE POLICY "Enable select for users based on user_id" ON "public"."users" FOR SELECT USING ((( SELECT "auth"."uid"() AS "uid") = "id"));
+-- CREATE POLICY "Enable select for users based on user_id" ON "public"."users" FOR SELECT USING ((( SELECT "auth"."uid"() AS "uid") = "id"));
 
 ALTER TABLE "public"."data" ENABLE ROW LEVEL SECURITY;
 

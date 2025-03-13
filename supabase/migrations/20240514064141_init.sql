@@ -20,6 +20,7 @@ create table
     public.data (
         id text not null,
         output text null,
+        input text null,
         failed boolean null,
         created_at timestamp with time zone null default now(),
         user_id uuid null default auth.uid (),

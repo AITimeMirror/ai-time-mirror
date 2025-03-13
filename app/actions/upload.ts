@@ -40,9 +40,10 @@ export async function upload(previousState: any, formData: FormData) {
   // Generate key and insert id to supabase
   const { key } = await setRandomKey(user_id);
   const input = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/input/${user_id}/${key}`;
-
   const buffer = await image.arrayBuffer();
   
+  console.log("开始上传...", new Date().toISOString());
+
   const { data: storageData, error: storageError } = await supabaseAdmin.storage
     .from("input")
     .upload(`/${user_id}/${key}`, buffer, {
@@ -50,11 +51,16 @@ export async function upload(previousState: any, formData: FormData) {
       cacheControl: "3600",
       upsert: true,
     });
-  if (storageError)
+
+  if (storageError) {
+    console.log("Error uploading image", storageError);
     return {
       message: "Unexpected error uploading image, please try again",
       status: 400,
     };
+  } else {
+    console.log("上传成功，开始预测分析...", new Date().toISOString());
+  }
 
   try {
     const prediction = await replicate.predictions.create({
@@ -76,6 +82,7 @@ export async function upload(previousState: any, formData: FormData) {
       return { message: "Prediction error generating gif", status: 500 };
     }
   } catch (e) {
+    console.log("Error generating gif", e);
     return {
       message: "Unexpected error generating gif, please try again",
       status: 500,
@@ -85,6 +92,7 @@ export async function upload(previousState: any, formData: FormData) {
   await updateCredits(user_id, -10);
 
   redirect(`/p/${key}`);
+  // window.location.reload();
 }
 
 // Generates new key that doesn't already exist in db

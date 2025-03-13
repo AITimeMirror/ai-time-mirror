@@ -1,5 +1,6 @@
 import PhotoPage from "@/app/p/[id]/photo-page";
 import { createClient } from "@/lib/supabase/server";
+import { log } from "console";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
@@ -26,6 +27,6 @@ async function getData(id: string) {
 export default async function Photo({ params }: { params: { id: string } }) {
   const { id } = params;
   const fallbackData = await getData(id);
-
+  console.log(fallbackData);
   return <PhotoPage id={id} data={fallbackData} />;
 }
