@@ -41,7 +41,7 @@ export async function upload(previousState: any, formData: FormData) {
   const { key } = await setRandomKey(user_id);
   const input = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/input/${user_id}/${key}`;
   const buffer = await image.arrayBuffer();
-  
+
   console.log("开始上传...", new Date().toISOString());
 
   const { data: storageData, error: storageError } = await supabaseAdmin.storage
