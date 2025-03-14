@@ -50,7 +50,7 @@ export async function uploadAgePredict(previousState: any, formData: FormData) {
       version:
         "0c3080879f50097e4f7847c68a22d9586fd69196bed06239b85688d02c93d2eb",
       input: {
-        image: `https://zufrwdcmaojotovkjeww.supabase.co/storage/v1/object/public/temp/${storageData?.path}`,
+        image: `https://efvyboepuesokdpbcoqj.supabase.co/storage/v1/object/public/temp/${storageData?.path}`,
       },
     });
 
