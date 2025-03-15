@@ -94,9 +94,8 @@ export function UserDropdown({ userData }: { userData: UserData | null }) {
           <DropdownMenuItem className="space-x-2" disabled>
             <Coins className="h-4 w-4" />
             <p className="text-sm">
-              {stripeStatus?.success && stripeStatus?.credits
-                ? userData?.credits + stripeStatus.credits
-                : userData?.credits}{" "}
+              {/* {stripeStatus?.success && stripeStatus?.credits ? userData?.credits + stripeStatus.credits : userData?.credits}{" "} */}
+              {userData?.credits}{" "}
               Credits
             </p>
           </DropdownMenuItem>
