@@ -12,7 +12,7 @@ export function GalleryPage({ data }: { data: DataProps[] | null }) {
       <div className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-7xl md:leading-[5rem]">
         <Balancer>Gallery</Balancer>
       </div>
-      <div className="grid w-full gap-4 px-4 sm:grid-cols-2">
+      <div className="grid w-full gap-4 px-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {data?.map((row) => (
           <div
             key={row.id}

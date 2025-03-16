@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
       .from("data")
       .update({
         output: outputURL,
+        failed: false,
       })
       .eq("id", id);
     if (error)

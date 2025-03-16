@@ -6,13 +6,12 @@ export default async function Gallery() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
   const { data } = await supabase
     .from("data")
     .select("*")
     .order("created_at", { ascending: false })
-    .match({ user_id: session?.user.id || "", failed: false });
-
+    .match({ user_id: user?.id || "", failed: false });
   return <GalleryPage data={data} />;
 }
