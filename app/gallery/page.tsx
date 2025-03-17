@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { GalleryPage } from "@/app/gallery/gallery-page";
+import { TermsAndPrivacy } from "@/components/layout/terms-and-privacy";
 
 export default async function Gallery() {
   const cookieStore = cookies();
@@ -13,5 +14,11 @@ export default async function Gallery() {
     .select("*")
     .order("created_at", { ascending: false })
     .match({ user_id: user?.id || "", failed: false });
-  return <GalleryPage data={data} />;
+  return (
+    <div className="flex flex-col items-center justify-center full-width-page">
+      <GalleryPage data={data} />
+      <TermsAndPrivacy/>
+    </div>
+    
+  )
 }

@@ -121,18 +121,18 @@ export default function PhotoBooth({
         <CarouselContent>
           {/* Input */}
           <CarouselItem>
-            <Card className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl">
+            <Card className="flex aspect-[6/8] items-center justify-center overflow-hidden rounded-2xl">
               <img
                 alt="input image"
                 src={input || ""}
-                className="h-full object-cover"
+                className="h-full w-full object-cover"
               />
             </Card>
           </CarouselItem>
 
           {/* Output */}
           <CarouselItem>
-            <Card className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl">
+            <Card className="flex aspect-[6/8] items-center justify-center overflow-hidden rounded-2xl">
               {failed ? (
                 <p className="text-center text-sm text-red-500">
                   Failed to run - could not find face in image. Try another!{" "}

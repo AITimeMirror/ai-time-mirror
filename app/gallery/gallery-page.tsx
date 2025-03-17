@@ -12,11 +12,22 @@ export function GalleryPage({ data }: { data: DataProps[] | null }) {
       <div className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-7xl md:leading-[5rem]">
         <Balancer>Gallery</Balancer>
       </div>
-      <div className="grid w-full gap-4 px-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="
+        grid 
+        w-full 
+        max-w-7xl 
+        grid-cols-1 
+        sm:grid-cols-2 
+        md:grid-cols-3 
+        lg:grid-cols-4 
+        gap-4 
+        px-0 
+        mx-auto        
+      ">
         {data?.map((row) => (
           <div
             key={row.id}
-            className="cursor-pointer transition-all hover:scale-[1.01]"
+            className="cursor-pointer transition-all hover:scale-[1.01] max-w-xs" // 修改: 将 max-w-sm 替换为 max-w-xs
             onClick={() => router.push(`/p/${row.id}`)}
           >
             <PhotoBooth

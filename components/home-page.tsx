@@ -14,6 +14,8 @@ import { useUserDataStore } from "@/components/layout/navbar";
 import { useSignInDialog } from "@/components/layout/sign-in-dialog";
 import { useCheckoutDialog } from "@/components/layout/checkout-dialog";
 import { TermsAndPrivacy } from "@/components/layout/terms-and-privacy";
+// import Footer from "./layout/footer";
+
 // import {
 //   AgePredictDialog,
 //   useAgePredictDialog,
@@ -26,7 +28,7 @@ export default function HomePage({ count }: { count: number | null }) {
   const setShowSignInModal = useSignInDialog((s) => s.setOpen);
   const userData = useUserDataStore((s) => s.userData);
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center min-h-screen full-width-page">
       <UploadDialog />
       {/*<AgePredictDialog />*/}
       <motion.div
@@ -119,7 +121,7 @@ export default function HomePage({ count }: { count: number | null }) {
       </motion.div>
 
       <FAQ />
-
+      
       <TermsAndPrivacy/>
     </div>
   );
