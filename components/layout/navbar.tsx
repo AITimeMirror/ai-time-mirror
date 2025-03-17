@@ -5,7 +5,7 @@ import Link from "next/link";
 import useScroll from "@/lib/hooks/use-scroll";
 import { UserDropdown } from "./user-dropdown";
 import { createClient } from "@/lib/supabase/client";
-import useSWRImmutable from "swr/immutable";
+import useSWR from "swr";
 import { Button } from "@/components/ui/button";
 import {
   SignInDialog,
@@ -29,7 +29,7 @@ export default function Navbar() {
 
   const supabase = createClient();
 
-  const { data: userData, isLoading } = useSWRImmutable(
+  const { data: userData, isLoading } = useSWR(
     "userData",
     async () => {
       const { data: userData } = await supabase
@@ -38,10 +38,23 @@ export default function Navbar() {
         .single();
 
       setUserData(userData);
-
       return userData;
-    },
+    }
   );
+
+  // const { data: userData, isLoading } = useSWRImmutable(
+  //   "userData",
+  //   async () => {
+  //     const { data: userData } = await supabase
+  //       .from("users")
+  //       .select("*")
+  //       .single();
+
+  //     setUserData(userData);
+
+  //     return userData;
+  //   },
+  // );
 
   const setShowSignInDialog = useSignInDialog((s) => s.setOpen);
   const scrolled = useScroll(50);

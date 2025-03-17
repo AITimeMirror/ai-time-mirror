@@ -19,11 +19,13 @@ import { Button } from "@/components/ui/button";
 import { create } from "zustand";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
-import { ChangeEvent, useCallback, useMemo, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { LoadingDots } from "@/components/shared/icons";
 import { UploadCloud } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
-import { upload } from "@/app/actions/upload";
+import { upload, UploadState } from "@/app/actions/upload";
+import { useRouter } from "next/navigation";
+import { useUserDataStore } from "@/components/layout/navbar";
 
 type UploadDialogStore = {
   open: boolean;
@@ -129,10 +131,30 @@ export function UploadForm() {
   );
 
   // Move to useActionState in future release of Next.js
-  const [state, uploadFormAction] = useFormState(upload, {
-    message: "",
-    status: 0,
-  });
+  const [state, uploadFormAction] = useFormState<UploadState, FormData>(
+    (previousState: UploadState, formData: FormData) => upload(previousState, formData),
+    {
+      message: "",
+      status: 0,
+      redirectUrl: undefined,
+      updatedUser: undefined
+    }
+  );
+
+  const router = useRouter();
+  const setUserData = useUserDataStore((s) => s.setUserData);
+
+  useEffect(() => {
+    if (state.status === 200) {
+      if (state?.updatedUser) {
+        setUserData(state.updatedUser);
+      }
+      if (state?.redirectUrl) {
+        // Redirect to the photo page
+        router.push(state?.redirectUrl);
+      }
+    }
+  }, [state, router, setUserData]);
 
   return (
     <form

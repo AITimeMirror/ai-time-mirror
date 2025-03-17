@@ -5,11 +5,19 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { nanoid } from "nanoid";
-import { redirect } from "next/navigation";
 import { getDomain } from "@/lib/utils";
+import { Tables } from "@/lib/supabase/types_db";
+import { UserData } from "@/lib/types";
 // import { waitUntil } from "@vercel/functions";
 
-export async function upload(previousState: any, formData: FormData) {
+export type UploadState = {
+  message: string;
+  status: number;
+  redirectUrl?: string | null;
+  updatedUser?: Tables<"users"> | null;
+};
+
+export async function upload(previousState: UploadState, formData: FormData): Promise<UploadState> {
   const replicate = new Replicate({
     // get your token from https://replicate.com/account
     auth: process.env.REPLICATE_API_TOKEN || "",
@@ -79,20 +87,32 @@ export async function upload(previousState: any, formData: FormData) {
       prediction.status === "failed" ||
       prediction.status === "canceled"
     ) {
-      return { message: "Prediction error generating gif", status: 500 };
+      return { 
+        message: "Prediction error generating gif", 
+        status: 500
+      };
     }
+
+    // 以下87-93行是修改后的处理逻辑
+    const updatedUserData = await updateCredits(user_id, -10);
+    return {
+      message: "",
+      status: 200,
+      redirectUrl: `/p/${key}`,
+      updatedUser: updatedUserData // 包含最新积分数据
+    };
+
   } catch (e) {
     console.log("Error generating gif", e);
     return {
       message: "Unexpected error generating gif, please try again",
-      status: 500,
+      status: 500
     };
   }
 
-  await updateCredits(user_id, -10);
-
-  redirect(`/p/${key}`);
-  // window.location.reload();
+  // 以下是原来的处理逻辑
+  // await updateCredits(user_id, -10);
+  // redirect(`/p/${key}`);
 }
 
 // Generates new key that doesn't already exist in db
@@ -125,11 +145,43 @@ async function getCredits(user_id: string) {
   return data?.credits;
 }
 
-async function updateCredits(user_id: string, credit_amount: number) {
+async function updateCredits(
+  user_id: string,
+  credit_amount: number
+): Promise<UserData> {
   const supabaseAdmin = createAdminClient();
 
-  await supabaseAdmin.rpc("update_credits", {
-    user_id: user_id,
-    credit_amount: credit_amount,
+  // 1. 执行 RPC 更新积分
+  const { error: rpcError } = await supabaseAdmin.rpc("update_credits", {
+    user_id,
+    credit_amount,
   });
+
+  if (rpcError) {
+    console.error("RPC 调用失败:", rpcError);
+    throw new Error("积分更新失败");
+  }
+
+  // 2. 查询最新用户数据
+  const { data, error } = await supabaseAdmin
+    .from("users")
+    .select("*")
+    .eq("id", user_id)
+    .single();
+
+  if (error) {
+    console.error("查询用户数据失败:", error);
+    throw new Error("用户数据获取失败");
+  }
+
+  return data;
 }
+
+// async function updateCredits(user_id: string, credit_amount: number) {
+//   const supabaseAdmin = createAdminClient();
+
+//   await supabaseAdmin.rpc("update_credits", {
+//     user_id: user_id,
+//     credit_amount: credit_amount,
+//   });
+// }
