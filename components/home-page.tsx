@@ -115,7 +115,7 @@ export default function HomePage({ count }: { count: number | null }) {
           output={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/temp/output.gif`}
           // output="https://images.extrapolate.workers.dev/output.gif"
           className="h-[350px] sm:h-[600px] sm:w-[600px]"
-        />
+        />        
       </motion.div>
 
       <FAQ />

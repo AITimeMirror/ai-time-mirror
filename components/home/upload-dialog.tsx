@@ -101,9 +101,7 @@ export function UploadDialog() {
 }
 
 export function UploadForm() {
-  const [data, setData] = useState<{
-    image: string | null;
-  }>({
+  const [data, setData] = useState<{ image: string | null; }>({
     image: null,
   });
 
