@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { create } from "zustand";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { LoadingDots } from "@/components/shared/icons";
 import { UploadCloud } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
@@ -106,10 +106,9 @@ export function UploadForm() {
   const [data, setData] = useState<{ image: string | null; }>({
     image: null,
   });
-
   const [fileSizeTooBig, setFileSizeTooBig] = useState(false);
-
   const [dragActive, setDragActive] = useState(false);
+  const [isPending, setIsPending] = useState(false); // 手动控制 pending 状态
 
   const onChangePicture = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -143,22 +142,37 @@ export function UploadForm() {
 
   const router = useRouter();
   const setUserData = useUserDataStore((s) => s.setUserData);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
+  // 监听 state 变化，处理提交结果
+  useEffect(() => {    
     if (state.status === 200) {
       if (state?.updatedUser) {
         setUserData(state.updatedUser);
       }
       if (state?.redirectUrl) {
-        // Redirect to the photo page
-        router.push(state?.redirectUrl);
-      }
+        router.push(state.redirectUrl);
+      }      
+    } else if (state.status === 400) {
+      console.error("上传失败:", state.message);
     }
-  }, [state, router, setUserData]);
+    console.log("isPending: ", isPending);
+    console.log("state: ", state);
+  }, [isPending, state, router, setUserData]);
+  
+  // handleSubmit 函数
+  const handleSubmit = async (formData: FormData) => {
+    console.log("handleSubmit called");
+    setIsPending(true); // 立即设置 isPending 为 true
+    if (submitButtonRef.current) {
+      submitButtonRef.current.disabled = true; // 立即禁用按钮
+    }
+    uploadFormAction(formData);
+  };
 
   return (
     <form
-      action={uploadFormAction}
+      action={handleSubmit}
       className="grid gap-6 bg-muted px-4 py-8 md:px-16"
     >
       <div>
@@ -255,11 +269,19 @@ export function UploadForm() {
         {state?.message && <p className="text-destructive">{state.message}</p>}
       </div>
 
-      <UploadButton data={data} />
+      <Button 
+        ref={submitButtonRef} 
+        variant="outline" 
+        disabled={!data.image || isPending} 
+        className="w-full"
+      >
+        {isPending ? <LoadingDots color="#808080" /> : <p className="text-sm">Confirm upload</p>}
+      </Button>
+
+      {/* <UploadButton data={data}/> */}
     </form>
   );
 }
-
 export function UploadButton({ data }: { data: { image: string | null } }) {
   const { pending } = useFormStatus();
 
