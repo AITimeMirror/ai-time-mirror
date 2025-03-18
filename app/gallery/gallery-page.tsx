@@ -4,7 +4,6 @@ import Balancer from "react-wrap-balancer";
 import PhotoBooth from "@/components/home/photo-booth";
 import { useRouter } from "next/navigation";
 import { DataProps } from "@/lib/types";
-
 export function GalleryPage({ data }: { data: DataProps[] | null }) {
   const router = useRouter();
   return (
@@ -36,7 +35,7 @@ export function GalleryPage({ data }: { data: DataProps[] | null }) {
               output={row.output}
               failed={row.failed}
               initialState={0}
-              className="h-full"
+              cardClassName="aspect-[3/4]"
             />
           </div>
         ))}

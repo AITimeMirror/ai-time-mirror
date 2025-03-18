@@ -31,14 +31,16 @@ export default function PhotoBooth({
   output,
   failed,
   initialState = 1,
-  className,
+  containerClassName, // 用于 motion.div
+  cardClassName, // 用于 Card
 }: {
   id?: string;
   input: string;
   output: string | null;
   failed?: boolean | null;
   initialState?: 0 | 1;
-  className?: string;
+  containerClassName?: string; 
+  cardClassName?: string 
 }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(initialState);
@@ -56,7 +58,7 @@ export default function PhotoBooth({
 
   return (
     <motion.div
-      className={cn("group relative mx-auto mt-10 size-full", className)}
+      className={cn("group relative mx-auto mt-10 size-full", containerClassName)}
       variants={FADE_DOWN_ANIMATION_VARIANTS}
     >
       <Button
@@ -121,7 +123,7 @@ export default function PhotoBooth({
         <CarouselContent>
           {/* Input */}
           <CarouselItem>
-            <Card className="flex aspect-[6/8] items-center justify-center overflow-hidden rounded-2xl">
+            <Card className={cn("flex aspect-[1/1] items-center justify-center overflow-hidden rounded-2xl", cardClassName)}>
               <img
                 alt="input image"
                 src={input || ""}
@@ -132,7 +134,7 @@ export default function PhotoBooth({
 
           {/* Output */}
           <CarouselItem>
-            <Card className="flex aspect-[6/8] items-center justify-center overflow-hidden rounded-2xl">
+            <Card className={cn("flex aspect-[1/1] items-center justify-center overflow-hidden rounded-2xl", cardClassName)}>
               {failed ? (
                 <p className="text-center text-sm text-red-500">
                   Failed to run - could not find face in image. Try another!{" "}
@@ -160,7 +162,7 @@ export default function PhotoBooth({
                 <img
                   alt="output image"
                   src={output || ""}
-                  className="h-full object-cover"
+                  className="h-full w-full object-cover"
                 />
               )}
             </Card>
