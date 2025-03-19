@@ -24,7 +24,8 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { Google, LoadingDots } from "@/components/shared/icons";
-import { getURL } from "@/lib/utils";
+import { getURL, getDomain } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 type SignInDialogStore = {
   open: boolean;
@@ -39,9 +40,22 @@ export const useSignInDialog = create<SignInDialogStore>((set) => ({
 export function SignInDialog() {
   const supabase = createClient();
   const [signInClicked, setSignInClicked] = useState(false);
-
   const [open, setOpen] = useSignInDialog((s) => [s.open, s.setOpen]);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") || "/"; // 获取目标路径
+
+  const handleSignIn = async () => {
+    setSignInClicked(true);
+    const redirectTo = getURL(`/api/auth/callback?next=${encodeURIComponent(next)}`);
+    console.log("redirectTo:", redirectTo);
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: redirectTo,
+      },
+    });
+  };
 
   if (isDesktop) {
     return (
@@ -74,15 +88,7 @@ export function SignInDialog() {
               variant="outline"
               disabled={signInClicked}
               className={`w-full space-x-3 shadow-sm`}
-              onClick={async () => {
-                setSignInClicked(true);
-                await supabase.auth.signInWithOAuth({
-                  provider: "google",
-                  options: {
-                    redirectTo: getURL("/api/auth/callback"),
-                  },
-                });
-              }}
+              onClick={handleSignIn}
             >
               {signInClicked ? (
                 <LoadingDots color="#808080" />

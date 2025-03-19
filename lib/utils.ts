@@ -65,6 +65,8 @@ export const truncate = (str: string, length: number) => {
 };
 
 export const getURL = (input: string = "") => {
+  console.log("Environment Variables:", process.env);
+  console.log("getURL: ", process.env.TUNNEL_URL);
   return process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}${input}`
     : process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"

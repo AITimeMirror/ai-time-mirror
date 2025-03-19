@@ -14,7 +14,7 @@ import { useUserDataStore } from "@/components/layout/navbar";
 import { useSignInDialog } from "@/components/layout/sign-in-dialog";
 import { useCheckoutDialog } from "@/components/layout/checkout-dialog";
 import { TermsAndPrivacy } from "@/components/layout/terms-and-privacy";
-// import Footer from "./layout/footer";
+import { useRouter } from "next/navigation";
 
 // import {
 //   AgePredictDialog,
@@ -26,7 +26,20 @@ export default function HomePage({ count }: { count: number | null }) {
   // const setShowAgePredictModal = useAgePredictDialog((s) => s.setOpen);
   const setShowCheckoutModal = useCheckoutDialog((s) => s.setOpen);
   const setShowSignInModal = useSignInDialog((s) => s.setOpen);
-  const userData = useUserDataStore((s) => s.userData);
+  const userData = useUserDataStore((s) => s.userData);  
+
+  const router = useRouter();
+  const handleGalleryClick = (e: React.MouseEvent) => {
+    console.log("handleGalleryClick");
+    if (!userData) {
+      e.preventDefault(); // 阻止默认跳转行为
+      const currentPath = "/gallery"; // 目标路径
+      router.push(`/?next=${encodeURIComponent(currentPath)}`); // 将目标路径保存到 URL 参数
+      console.log("currentPath: ", currentPath);
+      setShowSignInModal(true); // 弹出登录对话框
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen full-width-page">
       <UploadDialog />
@@ -92,12 +105,7 @@ export default function HomePage({ count }: { count: number | null }) {
             <Link href={"/gallery"}>
               <Button
                 className="space-x-2 rounded-full border border-primary transition-colors hover:bg-primary-foreground hover:text-primary"
-                onClick={(e) => {
-                  if (!userData) {
-                    e.preventDefault();
-                    setShowSignInModal(true);
-                  }
-                }}
+                onClick={handleGalleryClick}
               >
                 <Images className="h-5 w-5" />
                 <p>My Gallery</p>
