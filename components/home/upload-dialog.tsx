@@ -26,6 +26,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { upload, UploadState } from "@/app/actions/upload";
 import { useRouter } from "next/navigation";
 import { useUserDataStore } from "@/components/layout/navbar";
+import { usePathname } from "next/navigation";
 
 type UploadDialogStore = {
   open: boolean;
@@ -40,6 +41,12 @@ export const useUploadDialog = create<UploadDialogStore>((set) => ({
 export function UploadDialog() {
   const [open, setOpen] = useUploadDialog((s) => [s.open, s.setOpen]);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const pathname = usePathname(); // 获取当前路由
+
+  // 监听路由变化，关闭对话框
+  useEffect(() => {
+    setOpen(false); // 路由变化时关闭对话框
+  }, [pathname, setOpen]);
 
   if (isDesktop) {
     return (
@@ -152,7 +159,7 @@ export function UploadForm() {
       }
       if (state?.redirectUrl) {
         router.push(state.redirectUrl);
-      }      
+      }
     } else if (state.status === 400) {
       console.error("上传失败:", state.message);
     }

@@ -27,6 +27,6 @@ async function getData(id: string) {
 export default async function Photo({ params }: { params: { id: string } }) {
   const { id } = params;
   const fallbackData = await getData(id);
-  console.log(fallbackData);
+  console.log("fallbackData: ", fallbackData);
   return <PhotoPage id={id} data={fallbackData} />;
 }
