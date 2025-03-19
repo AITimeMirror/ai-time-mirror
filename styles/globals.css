@@ -11,6 +11,7 @@ html {
   overflow-y: auto;
 }
 
+/* 防止布局偏移 */
 .full-width-page {
   margin-right: calc(-1 * var(--scrollbar-compensation));
 }

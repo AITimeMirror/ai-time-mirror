@@ -39,7 +39,7 @@ export default function PhotoPage({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center full-width-page">
       <motion.div
         className="z-10 max-w-2xl px-5 xl:px-0"
         initial="hidden"
@@ -66,7 +66,7 @@ export default function PhotoPage({
           input={data.input}
           output={data.output}
           failed={data.failed}
-          className="h-[350px] sm:h-[600px] sm:w-[600px]"
+          containerClassName="h-[350px] sm:h-[600px] sm:w-[600px]"
         />
       </motion.div>
     </div>
