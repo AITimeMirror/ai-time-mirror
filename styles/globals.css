@@ -42,6 +42,18 @@ html {
   }
 }
 
+.fixed-navbar {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+  transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
+}
+
+.navbar-border {
+  will-change: transform, backdrop-filter, border-color;
+  transform: translateZ(0); /* 强制开启GPU加速 */
+}
+
 body {
   overflow-x: hidden;    /* 防止意外水平滚动 */
   max-width: 100vw;      /* 约束最大宽度 */

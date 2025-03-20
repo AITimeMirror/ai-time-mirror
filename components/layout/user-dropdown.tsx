@@ -1,3 +1,5 @@
+"use client"
+
 import { UserData } from "@/lib/types";
 import { createClient } from "@/lib/supabase/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
