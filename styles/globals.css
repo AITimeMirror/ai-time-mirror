@@ -43,15 +43,21 @@ html {
 }
 
 .fixed-navbar {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000;
-  transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  transform: translateY(0);
 }
 
-.navbar-border {
-  will-change: transform, backdrop-filter, border-color;
-  transform: translateZ(0); /* 强制开启GPU加速 */
+/* 添加滚动隐藏效果 */ 
+html:not(:hover) .fixed-navbar {
+  transform: translateY(-100%);
+}
+
+.navbar-inner {
+  contain: layout paint; /* 性能优化 */ /* [!code ++] */
+  max-width: 1280px; /* 标准大屏宽度 */ /* [!code ++] */
 }
 
 body {

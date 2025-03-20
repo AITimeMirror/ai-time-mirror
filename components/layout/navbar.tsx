@@ -55,8 +55,9 @@ export default function Navbar() {
   //   },
   // );
 
-  const setShowSignInDialog = useSignInDialog((s) => s.setOpen);
-  const scrolled = useScroll(50);
+  const setShowSignInDialog = useSignInDialog((s) => s.setOpen);  
+  const navbarRef = useScroll(50);
+  // const scrolled = useScroll(50);
 
   const SignInDialog = dynamic(
     () =>
@@ -65,9 +66,9 @@ export default function Navbar() {
       ),
     {
       ssr: false,
-      loading: () => (
-        <div className="size-9 animate-pulse rounded-full bg-gray-200" />
-      ),
+      // loading: () => (
+      //   <div className="size-9 animate-pulse rounded-full bg-gray-200" />
+      // ),
     },
   );
 
@@ -78,9 +79,9 @@ export default function Navbar() {
       ),
     {
       ssr: false,
-      loading: () => (
-        <div className="size-9 animate-pulse rounded-full bg-gray-200" />
-      ),
+      // loading: () => (
+      //   <div className="size-9 animate-pulse rounded-full bg-gray-200" />
+      // ),
     },
   );
 
@@ -90,18 +91,14 @@ export default function Navbar() {
         <SignInDialog />
       </Suspense>
       {/* 外层固定定位容器 */}
-      <div className={"fixed top-0 z-30 w-full transition-all fixed-navbar"}>
+      <div ref={navbarRef} className={"fixed top-0 z-30 w-full fixed-navbar"}>
         {/* 内层动态样式容器 */}
-        <div className={`
-          mx-5 h-16 
+        <div className="
+          px-5 h-16 
           max-w-screen-xl 
           xl:mx-auto
           border-b border-transparent
-          ${scrolled 
-            ? "bg-white/50 backdrop-blur-xl" 
-            : ""}
-          transition-[transform]
-          `}
+          navbar-inner"
         >
           <div className="flex h-full items-center justify-between">
             <Link href="/" className="flex items-center font-display text-2xl">
