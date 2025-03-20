@@ -56,7 +56,7 @@ export default function Navbar() {
   // );
 
   const setShowSignInDialog = useSignInDialog((s) => s.setOpen);  
-  const navbarRef = useScroll(50);
+  const navbarRef = useScroll(100);
   // const scrolled = useScroll(50);
 
   const SignInDialog = dynamic(

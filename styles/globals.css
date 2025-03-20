@@ -43,16 +43,14 @@ html {
 }
 
 .fixed-navbar {
-  background: rgba(255,255,255,0.5);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
-  transform: translateY(0);
-}
-
-/* 添加滚动隐藏效果 */ 
-html:not(:hover) .fixed-navbar {
-  transform: translateY(-100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: transparent; /* 初始背景透明 */ /* [!code ++] */
+  transition: backdrop-filter 0.3s ease; /* 平滑过渡 */
+  will-change: backdrop-filter; /* 性能优化 */
 }
 
 .navbar-inner {
