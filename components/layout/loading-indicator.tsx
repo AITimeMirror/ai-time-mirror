@@ -1,9 +1,10 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
-export function LoadingIndicator() {
+// 创建一个内部组件来使用 useSearchParams
+function LoadingIndicatorInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -33,5 +34,14 @@ export function LoadingIndicator() {
         <div className="h-2 w-2 animate-pulse rounded-full bg-blue-600" style={{ animationDelay: "0.4s" }}></div>
       </div>
     </div>
+  );
+}
+
+// 导出一个包含 Suspense 的组件
+export function LoadingIndicator() {
+  return (
+    <Suspense fallback={null}>
+      <LoadingIndicatorInner />
+    </Suspense>
   );
 }

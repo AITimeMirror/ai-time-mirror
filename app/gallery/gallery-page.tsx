@@ -1,10 +1,12 @@
 "use client";
 
+import { useEffect, useState, Suspense } from "react";
 import Balancer from "react-wrap-balancer";
 import PhotoBooth from "@/components/home/photo-booth";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { DataProps } from "@/lib/types";
 import { useCallback } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Pagination,
   PaginationContent,
@@ -14,8 +16,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useState, useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface GalleryPageProps {
   data: DataProps[] | null;
@@ -24,10 +24,12 @@ interface GalleryPageProps {
   pageSize: number;
 }
 
-export function GalleryPage({ data, totalCount, currentPage, pageSize }: GalleryPageProps) {
+// 创建一个内部组件来使用 useSearchParams
+function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPageProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
   
   // 计算总页数
   const totalPages = Math.ceil(totalCount / pageSize);
@@ -281,8 +283,6 @@ export function GalleryPage({ data, totalCount, currentPage, pageSize }: Gallery
     return items;
   };
 
-  const [isLoading, setIsLoading] = useState(true);
-  
   useEffect(() => {
     // 当数据加载完成后
     if (data) {
@@ -369,5 +369,29 @@ export function GalleryPage({ data, totalCount, currentPage, pageSize }: Gallery
         </div>
       )}
     </div>
+  );
+}
+
+// 导出一个包含 Suspense 的组件
+export function GalleryPage(props: GalleryPageProps) {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center">
+        <div className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-7xl md:leading-[5rem]">
+          <Balancer>Gallery</Balancer>
+        </div>
+        <div className="grid w-full max-w-7xl grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-8 px-0 mx-auto mt-8">
+          {Array(8).fill(0).map((_, index) => (
+            <div key={index} className="flex justify-center items-center">
+              <div className="w-full aspect-[3/4]">
+                <Skeleton className="w-full h-full rounded-2xl" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    }>
+      <GalleryPageInner {...props} />
+    </Suspense>
   );
 }
