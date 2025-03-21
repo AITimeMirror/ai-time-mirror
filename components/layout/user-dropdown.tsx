@@ -138,7 +138,7 @@ export function UserDropdown({ userData }: { userData: UserData | null }) {
             className="space-x-2"
             onClick={async () => {
               supabase.auth.signOut().then(() => {
-                window.location.reload();
+                window.location.href = '/';
               });
             }}
           >
