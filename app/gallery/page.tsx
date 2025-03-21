@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { GalleryPage } from "@/app/gallery/gallery-page";
-import { TermsAndPrivacy } from "@/components/layout/terms-and-privacy";
 
 export default async function Gallery({
   searchParams,
@@ -42,7 +41,6 @@ export default async function Gallery({
         currentPage={currentPage} 
         pageSize={pageSize} 
       />
-      <TermsAndPrivacy/>
     </div>
   )
 }
