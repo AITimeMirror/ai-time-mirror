@@ -14,6 +14,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useState, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface GalleryPageProps {
   data: DataProps[] | null;
@@ -279,46 +281,80 @@ export function GalleryPage({ data, totalCount, currentPage, pageSize }: Gallery
     return items;
   };
 
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    // 当数据加载完成后
+    if (data) {
+      // 短暂延迟以确保DOM更新
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [data]);
+  
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-7xl md:leading-[5rem]">
         <Balancer>Gallery</Balancer>
       </div>
-      <div className="
-        grid 
-        w-full 
-        max-w-7xl 
-        grid-cols-1 
-        sm:grid-cols-2 
-        md:grid-cols-3 
-        lg:grid-cols-4 
-        gap-4 
-        gap-y-8
-        px-0
-        mx-auto        
-      ">
-        {data?.map((row) => (
-          <div key={row.id} className="flex justify-center items-center">
-            <div 
-              className="cursor-pointer transition-all hover:scale-[1.01]"
-              onClick={() => router.push(`/p/${row.id}`)}
-            >
-              <PhotoBooth
-                id={row.id}
-                input={row.input}
-                output={row.output}
-                failed={row.failed}
-                initialState={0}
-                containerClassName="mt-0" // 覆盖默认的mt-10
-                cardClassName="aspect-[3/4] w-full h-full"
-              />
+      
+      {isLoading ? (
+        <div className="
+          grid 
+          w-full 
+          max-w-7xl 
+          grid-cols-1 
+          sm:grid-cols-2 
+          md:grid-cols-3 
+          lg:grid-cols-4 
+          gap-4 
+          gap-y-8
+          px-0
+          mx-auto
+          mt-8
+        ">
+          {Array(8).fill(0).map((_, index) => (
+            <div key={index} className="flex justify-center items-center">
+              <div className="w-full aspect-[3/4]">
+                <Skeleton className="w-full h-full rounded-2xl" />
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-      {(!data || data.length === 0) && (
-        <div className="mt-8 flex items-center justify-center">
-          <p>Upload a photo to see your gallery!</p>
+          ))}
+        </div>
+      ) : (
+        <div className="
+          grid 
+          w-full 
+          max-w-7xl 
+          grid-cols-1 
+          sm:grid-cols-2 
+          md:grid-cols-3 
+          lg:grid-cols-4 
+          gap-4 
+          gap-y-8
+          px-0
+          mx-auto        
+        ">
+          {data?.map((row) => (
+            <div key={row.id} className="flex justify-center items-center">
+              <div 
+                className="cursor-pointer transition-all hover:scale-[1.01]"
+                onClick={() => router.push(`/p/${row.id}`)}
+              >
+                <PhotoBooth
+                  id={row.id}
+                  input={row.input}
+                  output={row.output}
+                  failed={row.failed}
+                  initialState={0}
+                  containerClassName="mt-0" // 覆盖默认的mt-10
+                  cardClassName="aspect-[3/4] w-full h-full"
+                />
+              </div>
+            </div>
+          ))}
         </div>
       )}
       

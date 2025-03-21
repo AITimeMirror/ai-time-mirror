@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { DataProps } from "@/lib/types";
 import { motion } from "framer-motion";
 import { FADE_DOWN_ANIMATION_VARIANTS } from "@/lib/constants";
 import PhotoBooth from "@/components/home/photo-booth";
+import { Skeleton } from "@/components/ui/skeleton";
 import { createClient } from "@/lib/supabase/client";
-import { useState } from "react";
 
 export default function PhotoPage({
   id,
@@ -15,9 +16,45 @@ export default function PhotoPage({
   data: DataProps;
 }) {
   const [data, setData] = useState<DataProps>(fallbackData);
-
+  const [isLoading, setIsLoading] = useState(true);
+  
   const supabase = createClient();
   const realtime = supabase.channel(id);
+
+  // 图片预加载
+  useEffect(() => {
+    if (!data) return;
+    
+    const preloadImages = () => {
+      const inputImg = new Image();
+      const outputImg = new Image();
+      let loadedCount = 0;
+      
+      const checkAllLoaded = () => {
+        loadedCount++;
+        if (loadedCount >= 2) {
+          setIsLoading(false);
+        }
+      };
+      
+      inputImg.onload = checkAllLoaded;
+      inputImg.onerror = checkAllLoaded;
+      outputImg.onload = checkAllLoaded;
+      outputImg.onerror = checkAllLoaded;
+      
+      if (data.input) inputImg.src = data.input;
+      if (data.output) outputImg.src = data.output;
+    };
+    
+    preloadImages();
+    
+    // 设置超时，防止图片加载过久
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+    
+    return () => clearTimeout(timeout);
+  }, [data]);
 
   if (!fallbackData?.output && !fallbackData?.failed) {
     realtime
@@ -61,13 +98,24 @@ export default function PhotoPage({
         >
           Your Results
         </motion.h1>
-        <PhotoBooth
-          id={id}
-          input={data.input}
-          output={data.output}
-          failed={data.failed}
-          containerClassName="h-[350px] sm:h-[600px] sm:w-[600px]"
-        />
+        
+        {isLoading ? (
+          <div className="mt-10 w-full max-w-xl">
+            <Skeleton className="aspect-square w-full rounded-2xl h-[350px] sm:h-[600px] sm:w-[600px]" />
+            <div className="mt-4 flex justify-center space-x-4">
+              <Skeleton className="h-10 w-24 rounded-full" />
+              <Skeleton className="h-10 w-24 rounded-full" />
+            </div>
+          </div>
+        ) : (
+          <PhotoBooth
+            id={id}
+            input={data.input}
+            output={data.output}
+            failed={data.failed}
+            containerClassName="h-[350px] sm:h-[600px] sm:w-[600px]"
+          />
+        )}
       </motion.div>
     </div>
   );

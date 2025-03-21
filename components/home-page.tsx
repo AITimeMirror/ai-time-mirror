@@ -9,12 +9,13 @@ import PhotoBooth from "@/components/home/photo-booth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { UploadDialog, useUploadDialog } from "@/components/home/upload-dialog";
-import { FAQ } from "@/components/home/faq";
 import { useUserDataStore } from "@/components/layout/navbar";
 import { useSignInDialog } from "@/components/layout/sign-in-dialog";
 import { useCheckoutDialog } from "@/components/layout/checkout-dialog";
-import { TermsAndPrivacy } from "@/components/layout/terms-and-privacy";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+
 
 // import {
 //   AgePredictDialog,
@@ -39,7 +40,44 @@ export default function HomePage({ count }: { count: number | null }) {
       setShowSignInModal(true); // 弹出登录对话框
     }
   };
-
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    const preloadImages = () => {
+      const inputUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/temp/input.jpg`;
+      const outputUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/temp/output.gif`;
+      
+      let loadedCount = 0;
+      const totalImages = 2;
+      
+      const checkAllLoaded = () => {
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          setIsLoading(false);
+        }
+      };
+      
+      const inputImg = new Image();
+      inputImg.onload = checkAllLoaded;
+      inputImg.onerror = checkAllLoaded;
+      inputImg.src = inputUrl;
+      
+      const outputImg = new Image();
+      outputImg.onload = checkAllLoaded;
+      outputImg.onerror = checkAllLoaded;
+      outputImg.src = outputUrl;
+    };
+    
+    preloadImages();
+    
+    // 设置超时
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+    
+    return () => clearTimeout(timeout);
+  }, []);
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen full-width-page">
       <UploadDialog />
@@ -118,16 +156,26 @@ export default function HomePage({ count }: { count: number | null }) {
               : "Generate your photo now!"}
           </p>
         </motion.div>
-        <PhotoBooth
-          input={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/temp/input.jpg`}
-          output={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/temp/output.gif`}
-          containerClassName="h-[350px] sm:h-[600px] sm:w-[600px]"
-        />        
+        {/* PhotoBooth 部分 */}
+        {isLoading ? (
+          <div className="h-[350px] sm:h-[600px] sm:w-[600px] mx-auto rounded-2xl overflow-hidden">
+            <div className="flex flex-col items-center justify-center h-full bg-gray-100 rounded-2xl">
+              <Skeleton className="h-[80%] w-[80%] rounded-xl" />
+              <div className="mt-4 text-center">
+                <Skeleton className="h-4 w-32 mx-auto mb-2" />
+                <Skeleton className="h-3 w-48 mx-auto" />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <PhotoBooth
+            input={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/temp/input.jpg`}
+            output={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/temp/output.gif`}
+            containerClassName="h-[350px] sm:h-[600px] sm:w-[600px]"
+          />
+        )}
       </motion.div>
-
-      <FAQ />
       
-      <TermsAndPrivacy/>
     </div>
   );
 }
