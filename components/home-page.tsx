@@ -79,7 +79,7 @@ export default function HomePage({ count }: { count: number | null }) {
   }, []);
   
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen full-width-page">
+    <div className="flex flex-col items-center justify-center min-h-screen">
       <UploadDialog />
       {/*<AgePredictDialog />*/}
       <motion.div

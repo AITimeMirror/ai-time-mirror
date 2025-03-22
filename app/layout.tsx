@@ -10,7 +10,7 @@ import { Toaster } from "sonner";
 import { Analytics as DubAnalytics } from "@dub/analytics/react";
 import { TermsAndPrivacy } from "@/components/layout/terms-and-privacy";
 import { LoadingIndicator } from "@/components/layout/loading-indicator";
-
+import { Suspense } from "react";
 
 const clash = localFont({
   src: "../styles/ClashDisplay-Semibold.otf",
@@ -66,14 +66,18 @@ export default function RootLayout({
         strategy="lazyOnload"
       />
       <body>
-        <LoadingIndicator />
+        <Suspense fallback={null}>
+          <LoadingIndicator />
+        </Suspense>
         <div className="fixed -z-10 h-screen w-screen bg-gradient-to-br from-emerald-100 via-blue-50 to-rose-100" />
         <Navbar />
         <DubAnalytics />
-        <main className="min-h-screen py-32 antialiased">{children}</main>
+        <main className="min-h-screen py-32 antialiased full-width-page">{children}</main>
         <Analytics />
         <Toaster />
-        <TermsAndPrivacy/>
+        <div className="full-width-page">
+          <TermsAndPrivacy />
+        </div>
       </body>
     </html>
   );

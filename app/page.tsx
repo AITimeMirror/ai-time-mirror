@@ -24,5 +24,4 @@ export default async function Home() {
       <FAQ /> 
     </div>
   );
-  
 }

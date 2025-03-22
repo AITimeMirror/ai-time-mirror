@@ -34,7 +34,7 @@ export default async function Gallery({
     .range(start, end);
     
   return (
-    <div className="flex flex-col items-center justify-center full-width-page">
+    <div className="flex flex-col items-center justify-center">
       <GalleryPage 
         data={data} 
         totalCount={count || 0} 

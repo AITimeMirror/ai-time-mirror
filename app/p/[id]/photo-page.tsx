@@ -76,7 +76,7 @@ export default function PhotoPage({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center full-width-page">
+    <div className="flex flex-col items-center justify-center">
       <motion.div
         className="z-10 max-w-2xl px-5 xl:px-0"
         initial="hidden"
