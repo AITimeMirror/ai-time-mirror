@@ -323,7 +323,7 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             </div>
           ))}
         </div>
-      ) : (
+      ) : data && data.length > 0 ? (
         <div className="
           grid 
           w-full 
@@ -355,6 +355,19 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
               </div>
             </div>
           ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center w-full max-w-7xl mt-16 mb-16">
+          <div className="text-center">
+            <h3 className="text-2xl font-semibold text-gray-700 mb-4">Your gallery is empty</h3>
+            <p className="text-gray-500 mb-8">Upload a photo to see what you would look like in the future</p>
+            <button 
+              onClick={() => router.push('/')}
+              className="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition-colors"
+            >
+              Upload Now
+            </button>
+          </div>
         </div>
       )}
       
