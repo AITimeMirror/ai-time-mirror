@@ -6,7 +6,10 @@ import PhotoBooth from "@/components/home/photo-booth";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { DataProps } from "@/lib/types";
 import { useCallback } from "react";
+import { UploadDialog, useUploadDialog } from "@/components/home/upload-dialog";
+import { /* ArrowRight */ Upload } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -25,15 +28,21 @@ interface GalleryPageProps {
 }
 
 // 创建一个内部组件来使用 useSearchParams
-function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPageProps) {
+function GalleryPageInner({
+  data,
+  totalCount,
+  currentPage,
+  pageSize,
+}: GalleryPageProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
-  
+  const setShowUploadModal = useUploadDialog((s) => s.setOpen);
+
   // 计算总页数
   const totalPages = Math.ceil(totalCount / pageSize);
-  
+
   // 创建新的查询参数
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -41,9 +50,9 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
       params.set(name, value);
       return params.toString();
     },
-    [searchParams]
+    [searchParams],
   );
-  
+
   // 页面切换函数
   const handlePageChange = (pageNumber: number) => {
     const query = createQueryString("page", pageNumber.toString());
@@ -55,12 +64,16 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
   // 生成分页项
   const generatePaginationItems = () => {
     const items = [];
-    
+
     // 添加上一页按钮
     items.push(
       <PaginationItem key="prev">
-        <PaginationPrevious 
-          href={currentPage > 1 ? `${pathname}?${createQueryString("page", (currentPage - 1).toString())}` : "#"} 
+        <PaginationPrevious
+          href={
+            currentPage > 1
+              ? `${pathname}?${createQueryString("page", (currentPage - 1).toString())}`
+              : "#"
+          }
           onClick={(e) => {
             if (currentPage <= 1) {
               e.preventDefault();
@@ -71,15 +84,15 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
           }}
           className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
         />
-      </PaginationItem>
+      </PaginationItem>,
     );
-    
+
     // 如果总页数小于等于5，显示所有页码
     if (totalPages <= 5) {
       for (let i = 1; i <= totalPages; i++) {
         items.push(
           <PaginationItem key={i}>
-            <PaginationLink 
+            <PaginationLink
               href={`${pathname}?${createQueryString("page", i.toString())}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -89,14 +102,14 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             >
               {i}
             </PaginationLink>
-          </PaginationItem>
+          </PaginationItem>,
         );
       }
     } else {
       // 显示第一页
       items.push(
         <PaginationItem key={1}>
-          <PaginationLink 
+          <PaginationLink
             href={`${pathname}?${createQueryString("page", "1")}`}
             onClick={(e) => {
               e.preventDefault();
@@ -106,14 +119,14 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
           >
             1
           </PaginationLink>
-        </PaginationItem>
+        </PaginationItem>,
       );
-      
+
       // 如果当前页靠近开始
       if (currentPage <= 3) {
         items.push(
           <PaginationItem key={2}>
-            <PaginationLink 
+            <PaginationLink
               href={`${pathname}?${createQueryString("page", "2")}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -123,11 +136,11 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             >
               2
             </PaginationLink>
-          </PaginationItem>
+          </PaginationItem>,
         );
         items.push(
           <PaginationItem key={3}>
-            <PaginationLink 
+            <PaginationLink
               href={`${pathname}?${createQueryString("page", "3")}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -137,28 +150,28 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             >
               3
             </PaginationLink>
-          </PaginationItem>
+          </PaginationItem>,
         );
-        
+
         if (totalPages > 3) {
           items.push(
             <PaginationItem key="ellipsis1">
               <PaginationEllipsis />
-            </PaginationItem>
+            </PaginationItem>,
           );
         }
-      } 
+      }
       // 如果当前页靠近结束
       else if (currentPage >= totalPages - 2) {
         items.push(
           <PaginationItem key="ellipsis2">
             <PaginationEllipsis />
-          </PaginationItem>
+          </PaginationItem>,
         );
-        
+
         items.push(
           <PaginationItem key={totalPages - 2}>
-            <PaginationLink 
+            <PaginationLink
               href={`${pathname}?${createQueryString("page", (totalPages - 2).toString())}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -168,11 +181,11 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             >
               {totalPages - 2}
             </PaginationLink>
-          </PaginationItem>
+          </PaginationItem>,
         );
         items.push(
           <PaginationItem key={totalPages - 1}>
-            <PaginationLink 
+            <PaginationLink
               href={`${pathname}?${createQueryString("page", (totalPages - 1).toString())}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -182,20 +195,20 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             >
               {totalPages - 1}
             </PaginationLink>
-          </PaginationItem>
+          </PaginationItem>,
         );
-      } 
+      }
       // 当前页在中间
       else {
         items.push(
           <PaginationItem key="ellipsis3">
             <PaginationEllipsis />
-          </PaginationItem>
+          </PaginationItem>,
         );
-        
+
         items.push(
           <PaginationItem key={currentPage - 1}>
-            <PaginationLink 
+            <PaginationLink
               href={`${pathname}?${createQueryString("page", (currentPage - 1).toString())}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -204,12 +217,12 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             >
               {currentPage - 1}
             </PaginationLink>
-          </PaginationItem>
+          </PaginationItem>,
         );
-        
+
         items.push(
           <PaginationItem key={currentPage}>
-            <PaginationLink 
+            <PaginationLink
               href={`${pathname}?${createQueryString("page", currentPage.toString())}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -219,12 +232,12 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             >
               {currentPage}
             </PaginationLink>
-          </PaginationItem>
+          </PaginationItem>,
         );
-        
+
         items.push(
           <PaginationItem key={currentPage + 1}>
-            <PaginationLink 
+            <PaginationLink
               href={`${pathname}?${createQueryString("page", (currentPage + 1).toString())}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -233,21 +246,21 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             >
               {currentPage + 1}
             </PaginationLink>
-          </PaginationItem>
+          </PaginationItem>,
         );
-        
+
         items.push(
           <PaginationItem key="ellipsis4">
             <PaginationEllipsis />
-          </PaginationItem>
+          </PaginationItem>,
         );
       }
-      
+
       // 显示最后一页
       if (totalPages > 1) {
         items.push(
           <PaginationItem key={totalPages}>
-            <PaginationLink 
+            <PaginationLink
               href={`${pathname}?${createQueryString("page", totalPages.toString())}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -257,16 +270,20 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             >
               {totalPages}
             </PaginationLink>
-          </PaginationItem>
+          </PaginationItem>,
         );
       }
     }
-    
+
     // 添加下一页按钮
     items.push(
       <PaginationItem key="next">
-        <PaginationNext 
-          href={currentPage < totalPages ? `${pathname}?${createQueryString("page", (currentPage + 1).toString())}` : "#"}
+        <PaginationNext
+          href={
+            currentPage < totalPages
+              ? `${pathname}?${createQueryString("page", (currentPage + 1).toString())}`
+              : "#"
+          }
           onClick={(e) => {
             if (currentPage >= totalPages) {
               e.preventDefault();
@@ -275,11 +292,13 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
             e.preventDefault();
             handlePageChange(currentPage + 1);
           }}
-          className={currentPage >= totalPages ? "pointer-events-none opacity-50" : ""}
+          className={
+            currentPage >= totalPages ? "pointer-events-none opacity-50" : ""
+          }
         />
-      </PaginationItem>
+      </PaginationItem>,
     );
-    
+
     return items;
   };
 
@@ -293,53 +312,60 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
       return () => clearTimeout(timer);
     }
   }, [data]);
-  
+
   return (
     <div className="flex flex-col items-center justify-center">
+      <UploadDialog />
       <div className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-7xl md:leading-[5rem]">
         <Balancer>Gallery</Balancer>
       </div>
-      
+
       {isLoading ? (
-        <div className="
+        <div
+          className="
+          mx-auto 
+          mt-8 
           grid 
           w-full 
           max-w-7xl 
           grid-cols-1 
-          sm:grid-cols-2 
-          md:grid-cols-3 
-          lg:grid-cols-4 
           gap-4 
-          gap-y-8
+          gap-y-8 
           px-0
-          mx-auto
-          mt-8
-        ">
-          {Array(8).fill(0).map((_, index) => (
-            <div key={index} className="flex justify-center items-center">
-              <div className="w-full aspect-[3/4] rounded-2xl">
-                <Skeleton className="w-full h-full"/>
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-4
+        "
+        >
+          {Array(8)
+            .fill(0)
+            .map((_, index) => (
+              <div key={index} className="flex items-center justify-center">
+                <div className="aspect-[3/4] w-full rounded-2xl">
+                  <Skeleton className="h-full w-full" />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       ) : data && data.length > 0 ? (
-        <div className="
+        <div
+          className="
+          mx-auto 
           grid 
           w-full 
           max-w-7xl 
           grid-cols-1 
-          sm:grid-cols-2 
-          md:grid-cols-3 
-          lg:grid-cols-4 
           gap-4 
-          gap-y-8
-          px-0
-          mx-auto        
-        ">
+          gap-y-8 
+          px-0 
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-4        
+        "
+        >
           {data?.map((row) => (
-            <div key={row.id} className="flex justify-center items-center">
-              <div 
+            <div key={row.id} className="flex items-center justify-center">
+              <div
                 className="cursor-pointer transition-all hover:scale-[1.01]"
                 onClick={() => router.push(`/p/${row.id}`)}
               >
@@ -357,27 +383,32 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center w-full max-w-7xl mt-16 mb-16">
+        <div className="mb-16 mt-16 flex w-full max-w-7xl flex-col items-center justify-center">
           <div className="text-center">
-            <h3 className="text-2xl font-semibold text-gray-700 mb-4">Your gallery is empty</h3>
-            <p className="text-gray-500 mb-8">Upload a photo to see what you would look like in the future</p>
-            <button 
-              onClick={() => router.push('/')}
-              className="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition-colors"
-            >
-              Upload Now
-            </button>
+            <h3 className="mb-4 text-2xl font-semibold text-gray-700">
+              Your gallery is empty
+            </h3>
+            <p className="mb-8 text-gray-500">
+              Upload a photo to see what you would look like in the future
+            </p>
+            <div className="mt-6 flex justify-center space-x-4">
+              <Button
+                onClick={() => setShowUploadModal(true)}
+                className="space-x-2 rounded-full border border-primary transition-colors hover:bg-primary-foreground hover:text-primary"
+              >
+                <Upload className="h-5 w-5" />
+                <p>Upload Now</p>
+              </Button>
+            </div>
           </div>
         </div>
       )}
-      
+
       {/* shadcn/ui 分页组件 */}
       {totalPages > 1 && (
-        <div className="mt-10 mb-8 w-full max-w-7xl">          
+        <div className="mb-8 mt-10 w-full max-w-7xl">
           <Pagination>
-            <PaginationContent>
-              {generatePaginationItems()}
-            </PaginationContent>
+            <PaginationContent>{generatePaginationItems()}</PaginationContent>
           </Pagination>
         </div>
       )}
@@ -388,22 +419,26 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
 // 导出一个包含 Suspense 的组件
 export function GalleryPage(props: GalleryPageProps) {
   return (
-    <Suspense fallback={
-      <div className="flex flex-col items-center justify-center">
-        <div className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-7xl md:leading-[5rem]">
-          <Balancer>Gallery</Balancer>
+    <Suspense
+      fallback={
+        <div className="flex flex-col items-center justify-center">
+          <div className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-7xl md:leading-[5rem]">
+            <Balancer>Gallery</Balancer>
+          </div>
+          <div className="mx-auto mt-8 grid w-full max-w-7xl grid-cols-1 gap-4 gap-y-8 px-0 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {Array(8)
+              .fill(0)
+              .map((_, index) => (
+                <div key={index} className="flex items-center justify-center">
+                  <div className="aspect-[3/4] w-full rounded-2xl">
+                    <Skeleton className="h-full w-full" />
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
-        <div className="grid w-full max-w-7xl grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-8 px-0 mx-auto mt-8">
-          {Array(8).fill(0).map((_, index) => (
-            <div key={index} className="flex justify-center items-center">
-              <div className="w-full aspect-[3/4] rounded-2xl">
-                <Skeleton className="w-full h-full"/>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    }>
+      }
+    >
       <GalleryPageInner {...props} />
     </Suspense>
   );

@@ -6,7 +6,10 @@ import { motion } from "framer-motion";
 import { FADE_DOWN_ANIMATION_VARIANTS } from "@/lib/constants";
 import PhotoBooth from "@/components/home/photo-booth";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
+import { UploadDialog, useUploadDialog } from "@/components/home/upload-dialog";
+import { /* ArrowRight */ Upload } from "lucide-react";
 
 export default function PhotoPage({
   id,
@@ -17,42 +20,43 @@ export default function PhotoPage({
 }) {
   const [data, setData] = useState<DataProps>(fallbackData);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const supabase = createClient();
   const realtime = supabase.channel(id);
+  const setShowUploadModal = useUploadDialog((s) => s.setOpen);
 
   // 图片预加载
   useEffect(() => {
     if (!data) return;
-    
+
     const preloadImages = () => {
       const inputImg = new Image();
       const outputImg = new Image();
       let loadedCount = 0;
-      
+
       const checkAllLoaded = () => {
         loadedCount++;
         if (loadedCount >= 2) {
           setIsLoading(false);
         }
       };
-      
+
       inputImg.onload = checkAllLoaded;
       inputImg.onerror = checkAllLoaded;
       outputImg.onload = checkAllLoaded;
       outputImg.onerror = checkAllLoaded;
-      
+
       if (data.input) inputImg.src = data.input;
       if (data.output) outputImg.src = data.output;
     };
-    
+
     preloadImages();
-    
+
     // 设置超时，防止图片加载过久
     const timeout = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
-    
+
     return () => clearTimeout(timeout);
   }, [data]);
 
@@ -77,6 +81,7 @@ export default function PhotoPage({
 
   return (
     <div className="flex flex-col items-center justify-center">
+      <UploadDialog />
       <motion.div
         className="z-10 max-w-2xl px-5 xl:px-0"
         initial="hidden"
@@ -98,10 +103,10 @@ export default function PhotoPage({
         >
           Your Results
         </motion.h1>
-        
+
         {isLoading ? (
           <div className="mt-10 w-full max-w-xl">
-            <Skeleton className="aspect-square w-full rounded-2xl h-[350px] sm:h-[600px] sm:w-[600px]" />
+            <Skeleton className="aspect-square h-[350px] w-full rounded-2xl sm:h-[600px] sm:w-[600px]" />
             <div className="mt-4 flex justify-center space-x-4">
               <Skeleton className="h-10 w-24 rounded-full" />
               <Skeleton className="h-10 w-24 rounded-full" />
@@ -116,6 +121,15 @@ export default function PhotoPage({
             containerClassName="h-[350px] sm:h-[600px] sm:w-[600px]"
           />
         )}
+        <div className="mt-8 flex justify-center space-x-4">
+          <Button
+            onClick={() => setShowUploadModal(true)}
+            className="space-x-2 rounded-full border border-primary transition-colors hover:bg-primary-foreground hover:text-primary"
+          >            
+            <Upload className="h-5 w-5" />
+            <p>Upload Another Photo</p>
+          </Button>          
+        </div>
       </motion.div>
     </div>
   );
