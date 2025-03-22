@@ -20,6 +20,7 @@ export default function PhotoPage({
 }) {
   const [data, setData] = useState<DataProps>(fallbackData);
   const [isLoading, setIsLoading] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(!fallbackData?.output && !fallbackData?.failed);
 
   const supabase = createClient();
   const realtime = supabase.channel(id);
@@ -72,6 +73,7 @@ export default function PhotoPage({
         },
         async (payload) => {
           setData(payload.new as DataProps);
+          setIsProcessing(false); // 数据更新后，处理完成
           await realtime.unsubscribe();
           await supabase.removeChannel(realtime);
         },
@@ -125,6 +127,7 @@ export default function PhotoPage({
           <Button
             onClick={() => setShowUploadModal(true)}
             className="space-x-2 rounded-full border border-primary transition-colors hover:bg-primary-foreground hover:text-primary"
+            disabled={isLoading || isProcessing}
           >            
             <Upload className="h-5 w-5" />
             <p>Upload Another Photo</p>
