@@ -317,8 +317,8 @@ function GalleryPageInner({ data, totalCount, currentPage, pageSize }: GalleryPa
         ">
           {Array(8).fill(0).map((_, index) => (
             <div key={index} className="flex justify-center items-center">
-              <div className="w-full aspect-[3/4]">
-                <Skeleton className="w-full h-full rounded-2xl" />
+              <div className="w-full aspect-[3/4] rounded-2xl">
+                <Skeleton className="w-full h-full"/>
               </div>
             </div>
           ))}
@@ -383,8 +383,8 @@ export function GalleryPage(props: GalleryPageProps) {
         <div className="grid w-full max-w-7xl grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-8 px-0 mx-auto mt-8">
           {Array(8).fill(0).map((_, index) => (
             <div key={index} className="flex justify-center items-center">
-              <div className="w-full aspect-[3/4]">
-                <Skeleton className="w-full h-full rounded-2xl" />
+              <div className="w-full aspect-[3/4] rounded-2xl">
+                <Skeleton className="w-full h-full"/>
               </div>
             </div>
           ))}
