@@ -101,16 +101,35 @@ export default function Navbar() {
           navbar-inner"
         >
           <div className="flex h-full items-center justify-between">
-            <Link href="/" className="flex items-center font-display text-2xl">
-              <img
-                src="/logo.png"
-                alt="Logo image of a chat bubble"
-                width="191"
-                height="191"
-                className="mr-2 size-[30px] rounded-sm"
-              />
-              <p>Extrapolate</p>
-            </Link>
+            <div className="flex items-center">
+              <Link href="/" className="flex items-center font-display text-2xl">
+                <img
+                  src="/logo.png"
+                  alt="Logo image of a chat bubble"
+                  width="191"
+                  height="191"
+                  className="mr-2 size-[30px] rounded-sm"
+                />
+                <p>Extrapolate</p>
+              </Link>
+
+              {/* 添加导航菜单项 */}
+              <div className="hidden md:flex items-center ml-20 space-x-8">
+                <Link 
+                  href="/" 
+                  className="text-gray-600 hover:text-black font-medium text-lg tracking-wide transition-colors duration-200"
+                >
+                  Home
+                </Link>
+                <Link 
+                  href="/gallery" 
+                  className="text-gray-600 hover:text-black font-medium text-lg tracking-wide transition-colors duration-200"
+                >
+                  My Gallery
+                </Link>
+              </div>
+            </div>            
+
             <div>
               {userData ? (
                 <Suspense>
