@@ -82,6 +82,7 @@ export default function HomePage({ count }: { count: number | null }) {
     <div className="flex flex-col items-center justify-center min-h-screen">
       <UploadDialog />
       {/*<AgePredictDialog />*/}
+      
       <motion.div
         className="z-10 max-w-2xl px-5 xl:px-0"
         initial="hidden"
@@ -156,6 +157,7 @@ export default function HomePage({ count }: { count: number | null }) {
               : "Generate your photo now!"}
           </p>
         </motion.div>
+
         {/* PhotoBooth 部分 */}
         {isLoading ? (
           <div className="h-[350px] sm:h-[600px] sm:w-[600px] mx-auto rounded-2xl overflow-hidden">

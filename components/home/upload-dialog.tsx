@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { create } from "zustand";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
-import { ChangeEvent, useCallback, useEffect, useMemo, useState, useRef } from "react";
+import { ChangeEvent, useCallback, useEffect, useTransition, useState, useRef } from "react";
 import { LoadingDots } from "@/components/shared/icons";
 import { UploadCloud } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
@@ -115,7 +115,8 @@ export function UploadForm() {
   });
   const [fileSizeTooBig, setFileSizeTooBig] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  const [isPending, setIsPending] = useState(false); // 手动控制 pending 状态
+  const [isSubmitting, setIsSubmitting] = useState(false); // 手动控制状态
+  const [isPending, startTransition] = useTransition();
 
   const onChangePicture = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -152,7 +153,7 @@ export function UploadForm() {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
 
   // 监听 state 变化，处理提交结果
-  useEffect(() => {    
+  useEffect(() => {
     if (state.status === 200) {
       if (state?.updatedUser) {
         setUserData(state.updatedUser);
@@ -160,21 +161,21 @@ export function UploadForm() {
       if (state?.redirectUrl) {
         router.push(state.redirectUrl);
       }
+      // setIsSubmitting(false); // 成功后重置状态
     } else if (state.status === 400) {
       console.error("上传失败:", state.message);
     }
-    console.log("isPending: ", isPending);
+    // console.log("isPending: ", isPending);
     console.log("state: ", state);
-  }, [isPending, state, router, setUserData]);
+  }, [state, router, setUserData]);
   
   // handleSubmit 函数
   const handleSubmit = async (formData: FormData) => {
     console.log("handleSubmit called");
-    setIsPending(true); // 立即设置 isPending 为 true
-    if (submitButtonRef.current) {
-      submitButtonRef.current.disabled = true; // 立即禁用按钮
-    }
-    uploadFormAction(formData);
+    setIsSubmitting(true); // 设置手动状态
+    startTransition(() => {
+      uploadFormAction(formData);
+    });
   };
 
   return (
@@ -277,32 +278,32 @@ export function UploadForm() {
       </div>
 
       <Button 
-        ref={submitButtonRef} 
+        // ref={submitButtonRef} 
         variant="outline" 
-        disabled={!data.image || isPending} 
+        disabled={!data.image || isPending || isSubmitting} 
         className="w-full"
       >
-        {isPending ? <LoadingDots color="#808080" /> : <p className="text-sm">Confirm upload</p>}
+        {(isPending || isSubmitting) ? <LoadingDots color="#808080" /> : <p className="text-sm">Confirm upload</p>}
       </Button>
 
       {/* <UploadButton data={data}/> */}
     </form>
   );
 }
-export function UploadButton({ data }: { data: { image: string | null } }) {
-  const { pending } = useFormStatus();
+// export function UploadButton({ data }: { data: { image: string | null } }) {
+//   const { pending } = useFormStatus();
 
-  const saveDisabled = useMemo(() => {
-    return !data.image || pending;
-  }, [data.image, pending]);
+//   const saveDisabled = useMemo(() => {
+//     return !data.image || pending;
+//   }, [data.image, pending]);
 
-  return (
-    <Button variant="outline" disabled={saveDisabled} className="w-full">
-      {pending ? (
-        <LoadingDots color="#808080" />
-      ) : (
-        <p className="text-sm">Confirm upload</p>
-      )}
-    </Button>
-  );
-}
+//   return (
+//     <Button variant="outline" disabled={saveDisabled} className="w-full">
+//       {pending ? (
+//         <LoadingDots color="#808080" />
+//       ) : (
+//         <p className="text-sm">Confirm upload</p>
+//       )}
+//     </Button>
+//   );
+// }
