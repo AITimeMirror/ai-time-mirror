@@ -4,6 +4,7 @@ import { UserData } from "@/lib/types";
 import { createClient } from "@/lib/supabase/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
+import { useUserDataStore } from "@/components/layout/navbar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -25,8 +26,13 @@ import {
   useDeleteAccountDialog,
 } from "@/components/layout/delete-account-dialog";
 
-export function UserDropdown({ userData }: { userData: UserData | null }) {
+export function UserDropdown({ userData: propsUserData }: { userData: UserData | null }) {
   const supabase = createClient();
+
+  // 直接从全局状态获取最新数据
+  const storeUserData = useUserDataStore((s) => s.userData);
+  // 优先使用全局状态中的数据
+  const userData = storeUserData || propsUserData;
 
   const name = userData?.name;
   const email = userData?.email;
