@@ -42,22 +42,27 @@ export function Pricing() {
   }
 
   return (
-    <section id="pricing" className="w-full mt-10 md:py-24 lg:py-32">
+    <section id="pricing" className="mt-10 w-full md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl pb-4 font-bold tracking-wider sm:text-5xl">简单透明的定价</h2>
+            <h2 className="pb-4 text-3xl font-bold tracking-wider sm:text-5xl">
+              简单透明的定价
+            </h2>
             <p className="max-w-[900px] pb-8 text-gray-700 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               选择最适合您需求的套餐，立即开始体验
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-5xl mx-auto">
+        <div className="mx-auto mt-8 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
           {sortedProducts.map((product, index) => {
             const isPopular = index === 1;
-            
+
             return (
-              <div key={product.price_id} className={cn("flex", isPopular ? "md:-mt-8" : "")}>
+              <div
+                key={product.price_id}
+                className={cn("flex", isPopular ? "md:-mt-8" : "")}
+              >
                 {isPopular ? (
                   <BackgroundGradient
                     containerClassName={cn(
@@ -66,19 +71,27 @@ export function Pricing() {
                       "p-[2.5px]",
                     )}
                     className={cn(
-                      "flex flex-col h-full rounded-[14px] bg-background",
+                      "flex h-full flex-col rounded-[14px] bg-background",
                     )}
                   >
                     <div className="flex-1 p-6">
-                      <CardHeader className="p-0 pb-3">
-                        <CardTitle className="flex flex-row items-center justify-between">
-                          {product.name}
-                          <Badge className="ml-2 scale-100">POPULAR</Badge>
-                        </CardTitle>
-                        <div className="mt-4 text-4xl font-bold">${product.price}</div>
-                        <CardDescription className="mt-2">{product.description || "最受欢迎的选择"}</CardDescription>
+                      <CardHeader className="p-0 pb-3 text-center">
+                        <div className="relative">
+                          <CardTitle className="flex justify-center">
+                            {product.name}
+                          </CardTitle>
+                          <Badge className="absolute right-[-10px] top-[-10px] scale-100">
+                            POPULAR
+                          </Badge>
+                        </div>
+                        <div className="mt-4 text-4xl font-bold">
+                          ${product.price}
+                        </div>
+                        <CardDescription className="mt-2">
+                          {product.description || "最受欢迎的选择"}
+                        </CardDescription>
                       </CardHeader>
-                      <CardContent className="p-0 mt-4">
+                      <CardContent className="mt-4 flex justify-center p-0">
                         <ul className="space-y-2">
                           <li className="flex flex-row items-center">
                             <CircleCheck className="mr-2 size-4" />
@@ -95,19 +108,24 @@ export function Pricing() {
                         </ul>
                       </CardContent>
                     </div>
-                    <CardFooter className="p-6 pt-0 mt-auto">
+                    <CardFooter className="mt-auto p-6 pt-0">
                       <PricingButton product={product} />
                     </CardFooter>
                   </BackgroundGradient>
                 ) : (
-                  <Card className="flex flex-col h-full w-full border-gray-400">
+                  <Card className="flex h-full w-full flex-col rounded-2xl border-gray-400">
                     <div className="flex-1 p-6">
-                      <CardHeader className="p-0 pb-3">
+                      <CardHeader className="p-0 pb-3 text-center">
                         <CardTitle>{product.name}</CardTitle>
-                        <div className="mt-4 text-4xl font-bold">${product.price}</div>
-                        <CardDescription className="mt-2">{product.description || (index === 0 ? "入门体验" : "高级用户首选")}</CardDescription>
+                        <div className="mt-4 text-4xl font-bold">
+                          ${product.price}
+                        </div>
+                        <CardDescription className="mt-2">
+                          {product.description ||
+                            (index === 0 ? "入门体验" : "高级用户首选")}
+                        </CardDescription>
                       </CardHeader>
-                      <CardContent className="p-0 mt-4">
+                      <CardContent className="mt-4 flex justify-center p-0">
                         <ul className="space-y-2">
                           <li className="flex flex-row items-center">
                             <CircleCheck className="mr-2 size-4" />
@@ -126,7 +144,7 @@ export function Pricing() {
                         </ul>
                       </CardContent>
                     </div>
-                    <CardFooter className="p-6 pt-0 mt-auto">
+                    <CardFooter className="mt-auto p-6 pt-0">
                       <PricingButton product={product} />
                     </CardFooter>
                   </Card>
@@ -135,8 +153,10 @@ export function Pricing() {
             );
           })}
         </div>
-        <div className="flex justify-center mt-8">
-          <p className="text-sm text-gray-600">所有套餐均为一次性付款，无订阅</p>
+        <div className="mt-8 flex justify-center">
+          <p className="text-sm text-gray-600">
+            所有套餐均为一次性付款，无订阅
+          </p>
         </div>
       </div>
     </section>
@@ -156,7 +176,7 @@ function PricingButton({ product }: { product: Product }) {
 
   return (
     <Button
-      className="w-1/2 mx-auto focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+      className="mx-auto w-1/2 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
       onClick={() => {
         if (!userData) {
           setShowSignInModal(true);
