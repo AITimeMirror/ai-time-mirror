@@ -163,7 +163,7 @@ export default function HomePage({ count }: { count: number | null }) {
           <div className="h-[350px] sm:h-[600px] sm:w-[600px] mx-auto rounded-2xl overflow-hidden">
             <div className="flex flex-col items-center justify-center h-full bg-gray-100 rounded-2xl">
               {/* <Skeleton className="h-[85%] w-[85%] rounded-xl bg-gray-200 animate-[pulse_1s_ease-in-out_0.5s_infinite] from-gray-200 to-gray-200 bg-gradient-to-br" /> */}
-              <Skeleton className="h-[100%] w-[100%] rounded-xl bg-gradient-to-r from-transparent via-white to-transparent animate-shimmer" />
+              <Skeleton className="h-[100%] w-[100%] rounded-xl bg-gray-300 bg-gradient-to-r from-gray-300 via-white to-gray-300 animate-shimmer" />
             </div>
           </div>
         ) : (

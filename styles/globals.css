@@ -85,7 +85,7 @@ body {
 }
 
 .animate-shimmer {
-  animation: shimmer 2s linear infinite;
+  animation: shimmer 4s linear infinite;
   background-size: 400% 100%;
   /* 可以在这里添加其他样式，例如： */
   /* background-image: linear-gradient(to right, #f0f0f0, #e0e0e0, #f0f0f0); */
