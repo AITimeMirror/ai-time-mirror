@@ -28,7 +28,7 @@
         "product_data": {
           "name": "Pro",
           "metadata": {
-            "credits": "900"
+            "credits": "250"
           }
         }
       }
@@ -43,7 +43,7 @@
         "product_data": {
           "name": "Premium",
           "metadata": {
-            "credits": "4000"
+            "credits": "750"
           }
         }
       }
