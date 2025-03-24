@@ -8,7 +8,7 @@ import Balancer from "react-wrap-balancer";
 
 export function FAQ() {
   return (
-    <div className="mt-32 flex w-full max-w-2xl flex-col items-center justify-center px-5 xl:px-0">
+    <div id="faq" className="flex mt-4 w-full max-w-2xl flex-col items-center justify-center px-5 xl:px-0">
       <div className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-7xl md:leading-[5rem]">
         <Balancer>FAQ</Balancer>
       </div>

@@ -55,7 +55,7 @@ export default function Navbar() {
   //   },
   // );
 
-  const setShowSignInDialog = useSignInDialog((s) => s.setOpen);  
+  const setShowSignInDialog = useSignInDialog((s) => s.setOpen);
   const navbarRef = useScroll(100);
   // const scrolled = useScroll(50);
 
@@ -91,14 +91,15 @@ export default function Navbar() {
         <SignInDialog />
       </Suspense>
       {/* 外层固定定位容器 */}
-      <div ref={navbarRef} className={"fixed top-0 z-30 w-full fixed-navbar"}>
+      <div ref={navbarRef} className={"fixed-navbar fixed top-0 z-30 w-full"}>
         {/* 内层动态样式容器 */}
-        <div className="
-          px-5 h-16 
+        <div
+          className="
+          navbar-inner h-16 
           max-w-screen-xl 
-          xl:mx-auto
-          border-b border-transparent
-          navbar-inner"
+          border-b
+          border-transparent px-5
+          xl:mx-auto"
         >
           <div className="flex h-full items-center justify-between">
             <div className="flex items-center">
@@ -112,23 +113,35 @@ export default function Navbar() {
                 />
                 <p>Extrapolate</p>
               </Link>
+            </div>
 
-              {/* 添加导航菜单项 */}
-              <div className="hidden md:flex items-center ml-20 space-x-8">
-                <Link 
-                  href="/" 
-                  className="text-gray-600 hover:text-black font-medium text-lg tracking-wide transition-colors duration-200"
-                >
-                  Home
-                </Link>
-                <Link 
-                  href="/gallery" 
-                  className="text-gray-600 hover:text-black font-medium text-lg tracking-wide transition-colors duration-200"
-                >
-                  My Gallery
-                </Link>
-              </div>
-            </div>            
+            {/* 居中的导航菜单项 */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center space-x-8">
+              <Link
+                href="/"
+                className="text-lg font-medium tracking-wide text-gray-600 transition-colors duration-200 hover:text-black"
+              >
+                Home
+              </Link>
+              <Link
+                href="/#pricing"
+                className="text-lg font-medium tracking-wide text-gray-600 transition-colors duration-200 hover:text-black"
+              >
+                Pricing
+              </Link>
+              <Link
+                href="/gallery"
+                className="text-lg font-medium tracking-wide text-gray-600 transition-colors duration-200 hover:text-black"
+              >
+                My Gallery
+              </Link>
+              <Link
+                href="/#faq"
+                className="text-lg font-medium tracking-wide text-gray-600 transition-colors duration-200 hover:text-black"
+              >
+                FAQ
+              </Link>
+            </div>
 
             <div>
               {userData ? (
