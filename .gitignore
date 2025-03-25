@@ -24,3 +24,6 @@ next-env.d.ts
 
 # auth
 auth.config.json
+
+# TODO
+TODO.md

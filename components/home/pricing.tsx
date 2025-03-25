@@ -19,15 +19,11 @@ import { CircleCheck } from "lucide-react";
 import { BackgroundGradient } from "@/components/aceternity-ui/background-gradient";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { useCheckoutDialog } from "@/components/layout/checkout-dialog";
 import { useUserDataStore } from "@/components/layout/navbar";
 import { useSignInDialog } from "@/components/layout/sign-in-dialog";
 
 export function Pricing() {
   const supabase = createClient();
-  const setShowCheckoutModal = useCheckoutDialog((s) => s.setOpen);
-  const setShowSignInModal = useSignInDialog((s) => s.setOpen);
-  const userData = useUserDataStore((s) => s.userData);
 
   const { data: products } = useSWRImmutable("get_products", async () => {
     const get_products = "get_products";
@@ -167,7 +163,6 @@ function PricingButton({ product }: { product: Product }) {
   const [isPending, startTransition] = useTransition();
   const userData = useUserDataStore((s) => s.userData);
   const setShowSignInModal = useSignInDialog((s) => s.setOpen);
-  const setShowCheckoutModal = useCheckoutDialog((s) => s.setOpen);
 
   const checkoutWithProps = checkout.bind(null, {
     price_id: product.price_id,
