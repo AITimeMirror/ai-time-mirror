@@ -38,7 +38,7 @@ export function Pricing() {
   }
 
   return (
-    <section id="pricing" className="mt-10 w-full md:py-24 lg:py-32">
+    <section id="pricing" className="mt-6 w-full md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
