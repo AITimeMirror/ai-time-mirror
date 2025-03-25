@@ -375,7 +375,7 @@ function GalleryPageInner({
                   output={row.output}
                   failed={row.failed}
                   initialState={0}
-                  containerClassName="mt-0" // 覆盖默认的mt-10
+                  containerClassName="mt-4" // 覆盖默认的mt-10
                   cardClassName="aspect-[3/4] w-full h-full"
                 />
               </div>

@@ -109,7 +109,7 @@ export default function PhotoBooth({
 
   return (
     <motion.div
-      className={cn("group relative mx-auto mt-10 size-full", containerClassName)}
+      className={cn("group relative mx-auto size-full", containerClassName)}
       variants={FADE_DOWN_ANIMATION_VARIANTS}
     >
       <Button

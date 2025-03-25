@@ -108,12 +108,8 @@ export default function PhotoPage({
         </motion.h1>
 
         {isLoading ? (
-          <div className="mt-10 w-full max-w-xl">
-            <Skeleton className="aspect-square h-[350px] w-full rounded-2xl sm:h-[600px] sm:w-[600px]" />
-            <div className="mt-4 flex justify-center space-x-4">
-              <Skeleton className="h-10 w-24 rounded-full" />
-              <Skeleton className="h-10 w-24 rounded-full" />
-            </div>
+          <div className="w-full max-w-xl">
+            <Skeleton className="aspect-square h-[350px] w-full rounded-2xl sm:h-[450px] sm:w-[450px]" />
           </div>
         ) : (
           <PhotoBooth
@@ -121,7 +117,7 @@ export default function PhotoPage({
             input={data.input}
             output={data.output}
             failed={data.failed}
-            containerClassName="h-[350px] sm:h-[600px] sm:w-[600px]"
+            containerClassName="h-[350px] sm:h-[450px] sm:w-[450px]"
             onImagesLoaded={() => setImagesDisplayed(true)} // 添加回调
           />
         )}
