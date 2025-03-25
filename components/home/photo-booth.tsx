@@ -4,7 +4,7 @@
 import { FADE_DOWN_ANIMATION_VARIANTS } from "@/lib/constants";
 import { motion } from "framer-motion";
 import { Download } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { LoadingCircle } from "../shared/icons";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ export default function PhotoBooth({
   initialState = 1,
   containerClassName, // 用于 motion.div
   cardClassName, // 用于 Card
+  onImagesLoaded, // 添加回调属性
 }: {
   id?: string;
   input: string;
@@ -40,11 +41,14 @@ export default function PhotoBooth({
   failed?: boolean | null;
   initialState?: 0 | 1;
   containerClassName?: string; 
-  cardClassName?: string 
+  cardClassName?: string;
+  onImagesLoaded?: () => void; // 添加类型定义
 }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(initialState);
   const [downloading, setDownloading] = useState(false);
+  const inputImgRef = useRef<HTMLImageElement>(null);
+  const outputImgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     if (!api) return;
@@ -55,6 +59,53 @@ export default function PhotoBooth({
       setCurrent(api.selectedScrollSnap() as 0 | 1);
     });
   }, [api]);
+
+  // 添加图片加载监听
+  useEffect(() => {
+    if (!onImagesLoaded || !input || !output) return;
+    
+    let loadedCount = 0;
+    const totalImages = 2;
+    
+    const checkAllLoaded = () => {
+      loadedCount++;
+      if (loadedCount >= totalImages) {
+        onImagesLoaded();
+      }
+    };
+    
+    const inputImg = inputImgRef.current;
+    const outputImg = outputImgRef.current;
+    
+    if (inputImg) {
+      if (inputImg.complete) {
+        checkAllLoaded();
+      } else {
+        inputImg.addEventListener('load', checkAllLoaded);
+        inputImg.addEventListener('error', checkAllLoaded);
+      }
+    }
+    
+    if (outputImg) {
+      if (outputImg.complete) {
+        checkAllLoaded();
+      } else {
+        outputImg.addEventListener('load', checkAllLoaded);
+        outputImg.addEventListener('error', checkAllLoaded);
+      }
+    }
+    
+    return () => {
+      if (inputImg) {
+        inputImg.removeEventListener('load', checkAllLoaded);
+        inputImg.removeEventListener('error', checkAllLoaded);
+      }
+      if (outputImg) {
+        outputImg.removeEventListener('load', checkAllLoaded);
+        outputImg.removeEventListener('error', checkAllLoaded);
+      }
+    };
+  }, [input, output, onImagesLoaded]);
 
   return (
     <motion.div
@@ -125,6 +176,7 @@ export default function PhotoBooth({
           <CarouselItem>
             <Card className={cn("flex aspect-[1/1] items-center justify-center overflow-hidden rounded-2xl", cardClassName)}>
               <img
+                ref={inputImgRef}
                 alt="input image"
                 src={input || ""}
                 className="h-full w-full object-cover"
@@ -160,6 +212,7 @@ export default function PhotoBooth({
                 </div>
               ) : (
                 <img
+                  ref={outputImgRef}
                   alt="output image"
                   src={output || ""}
                   className="h-full w-full object-cover"

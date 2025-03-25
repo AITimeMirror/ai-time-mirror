@@ -21,6 +21,7 @@ export default function PhotoPage({
   const [data, setData] = useState<DataProps>(fallbackData);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(!fallbackData?.output && !fallbackData?.failed);
+  const [imagesDisplayed, setImagesDisplayed] = useState(false); // 添加状态
 
   const supabase = createClient();
   const realtime = supabase.channel(id);
@@ -121,13 +122,14 @@ export default function PhotoPage({
             output={data.output}
             failed={data.failed}
             containerClassName="h-[350px] sm:h-[600px] sm:w-[600px]"
+            onImagesLoaded={() => setImagesDisplayed(true)} // 添加回调
           />
         )}
         <div className="mt-8 flex justify-center space-x-4">
           <Button
             onClick={() => setShowUploadModal(true)}
             className="space-x-2 rounded-full border border-primary transition-colors hover:bg-primary-foreground hover:text-primary"
-            disabled={isLoading || isProcessing}
+            disabled={isLoading || isProcessing || !imagesDisplayed} // 添加条件
           >            
             <Upload className="h-5 w-5" />
             <p>Upload Another Photo</p>
