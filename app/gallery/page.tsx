@@ -12,7 +12,7 @@ export default async function Gallery({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  
+    
   // 获取分页参数
   const currentPage = Number(searchParams.page) || 1;
   const pageSize = Number(searchParams.size) || 8;

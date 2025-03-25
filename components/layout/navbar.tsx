@@ -129,12 +129,15 @@ export default function Navbar() {
               >
                 Pricing
               </Link>
-              <Link
-                href="/gallery"
-                className="text-lg font-medium tracking-wide text-gray-600 transition-colors duration-200 hover:text-black"
-              >
-                My Gallery
-              </Link>
+              {userData && (
+                <Link
+                  href="/gallery"
+                  className="text-lg font-medium tracking-wide text-gray-600 transition-colors duration-200 hover:text-black"
+                >
+                  My Gallery
+                </Link>
+              )}      
+              
               <Link
                 href="/#faq"
                 className="text-lg font-medium tracking-wide text-gray-600 transition-colors duration-200 hover:text-black"
