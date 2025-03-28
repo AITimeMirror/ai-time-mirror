@@ -23,23 +23,23 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://extrapolate-new.vercel.app"),
-  title: "Extrapolate - Transform your face with Artificial Intelligence",
+  metadataBase: new URL("https://ai-aging-pied.vercel.app/"),
+  title: "TimeMirror - Transform your face with Artificial Intelligence",
   description:
-    "Extrapolate is an app for you to see how well you age by transforming your face with Artificial Intelligence.",
+    "TimeMirror is an app for you to see how well you age by transforming your face with Artificial Intelligence.",
   openGraph: {
-    title: "Extrapolate - Transform your face with Artificial Intelligence",
+    title: "TimeMirror - Transform your face with Artificial Intelligence",
     description:
-      "Extrapolate is an app for you to see how well you age by transforming your face with Artificial Intelligence.",
+      "TimeMirror is an app for you to see how well you age by transforming your face with Artificial Intelligence.",
     images: "https://ref.extrapolate.app/og",
   },
   twitter: {
     card: "summary_large_image",
     site: "@vercel",
     creator: "@steventey",
-    title: "Extrapolate - Transform your face with Artificial Intelligence",
+    title: "TimeMirror - Transform your face with Artificial Intelligence",
     description:
-      "Extrapolate is an app for you to see how well you age by transforming your face with Artificial Intelligence.",
+      "TimeMirror is an app for you to see how well you age by transforming your face with Artificial Intelligence.",
     images: "https://ref.extrapolate.app/og",
   },
 };
