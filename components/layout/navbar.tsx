@@ -95,7 +95,7 @@ export default function Navbar() {
         {/* 内层动态样式容器 */}
         <div
           className="
-          navbar-inner h-16 
+          navbar-inner h-16
           max-w-screen-xl 
           border-b
           border-transparent px-5
@@ -109,9 +109,9 @@ export default function Navbar() {
                   alt="Logo image of a chat bubble"
                   width="191"
                   height="191"
-                  className="mr-2 size-[30px] rounded-sm"
+                  className="mr-2 w-[32px] h-[32px] rounded-md"
                 />
-                <p>Extrapolate</p>
+                <p className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">TimeMirror</p>
               </Link>
             </div>
 
@@ -155,7 +155,8 @@ export default function Navbar() {
                 !isLoading && (
                   <Button
                     size="sm"
-                    className="rounded-full border border-primary transition-all hover:bg-primary-foreground hover:text-primary"
+                    // className="rounded-full border border-primary transition-all hover:bg-primary-foreground hover:text-primary"
+                    className="space-x-2 rounded-full border border-blue-500 bg-blue-500 text-white transition-colors hover:bg-white hover:text-blue-700"
                     onClick={() => setShowSignInDialog(true)}
                   >
                     Sign In

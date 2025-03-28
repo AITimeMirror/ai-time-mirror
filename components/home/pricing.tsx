@@ -76,7 +76,7 @@ export function Pricing() {
                           <CardTitle className="flex justify-center">
                             {product.name}
                           </CardTitle>
-                          <Badge className="absolute right-[-10px] top-[-10px] scale-100">
+                          <Badge className="absolute right-[-10px] top-[-10px] scale-100 bg-red-500 hover:bg-red-600 text-white">
                             POPULAR
                           </Badge>
                         </div>
@@ -171,7 +171,8 @@ function PricingButton({ product }: { product: Product }) {
 
   return (
     <Button
-      className="mx-auto w-1/2 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+      // className="mx-auto w-1/2 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+      className="mx-auto w-1/2 rounded-full border border-blue-500 bg-blue-500 text-white transition-colors hover:bg-white hover:text-blue-700"
       onClick={() => {
         if (!userData) {
           setShowSignInModal(true);

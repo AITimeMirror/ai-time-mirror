@@ -126,7 +126,7 @@ export default function HomePage({ count }: { count: number | null }) {
         <motion.div variants={FADE_DOWN_ANIMATION_VARIANTS} className="-mb-4">
           <div className="mt-6 flex flex-row justify-center space-x-4">
             <Button
-              className="space-x-2 rounded-full border border-primary transition-colors hover:bg-primary-foreground hover:text-primary"
+              className="space-x-2 rounded-full border border-blue-500 bg-blue-500 text-white transition-colors hover:bg-white hover:text-blue-700"
               onClick={() => {
                 if (!userData) {
                   setShowSignInModal(true);
@@ -143,7 +143,7 @@ export default function HomePage({ count }: { count: number | null }) {
 
             <Link href={"/gallery"}>
               <Button
-                className="space-x-2 rounded-full border border-primary transition-colors hover:bg-primary-foreground hover:text-primary"
+                className="space-x-2 rounded-full border border-blue-500 bg-blue-500 text-white transition-colors hover:bg-white hover:text-blue-700"
                 onClick={handleGalleryClick}
               >
                 <Images className="h-5 w-5" />
