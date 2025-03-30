@@ -26,7 +26,8 @@ next-env.d.ts
 auth.config.json
 
 # sql
-# **/*.sql
+/supabase/migrations/*.sql
+/supabase/schema.sql
 
 # todo
 TODO.md
