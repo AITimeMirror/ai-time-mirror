@@ -109,10 +109,10 @@ export default function HomePage({ count }: { count: number | null }) {
         {/*  <ArrowRight className="size-5 text-[#1d9bf0]" />*/}
         {/*</motion.div>*/}
         <motion.h1
-          className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-7xl md:leading-[5rem]"
+          className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-default text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-7xl md:leading-[5rem]"
           variants={FADE_DOWN_ANIMATION_VARIANTS}
         >
-          <Balancer>See how well you age with AI</Balancer>
+          <Balancer>See how well your age with AI</Balancer>
         </motion.h1>
         <motion.p
           className="mt-6 text-center text-gray-500 md:text-xl"

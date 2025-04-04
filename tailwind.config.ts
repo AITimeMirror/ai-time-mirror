@@ -1,3 +1,4 @@
+import { title } from "process";
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 
@@ -86,6 +87,7 @@ const config = {
       fontFamily: {
         display: ["var(--font-clash)"],
         default: ["var(--font-inter)", "system-ui", "sans-serif"],
+        title: ["Montserrat", "Arial", "sans-serif"], // 添加新的字体选项
       },
     },
   },

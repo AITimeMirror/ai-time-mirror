@@ -42,7 +42,7 @@ export function Pricing() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="pb-4 text-3xl font-bold tracking-wider sm:text-5xl">
+            <h2 className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-default text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-5xl md:leading-[5rem]">
               Simple & Transparent Pricing
             </h2>
             <p className="max-w-[900px] pb-8 text-gray-700 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
