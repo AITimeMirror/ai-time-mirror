@@ -43,10 +43,10 @@ export function Pricing() {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <h2 className="pb-4 text-3xl font-bold tracking-wider sm:text-5xl">
-              简单透明的定价
+              Simple & Transparent Pricing
             </h2>
             <p className="max-w-[900px] pb-8 text-gray-700 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              选择最适合您需求的套餐，立即开始体验
+              Choose the plan that best fits your needs and start experiencing now
             </p>
           </div>
         </div>
@@ -84,22 +84,22 @@ export function Pricing() {
                           ${product.price}
                         </div>
                         <CardDescription className="mt-2">
-                          {product.description || "最受欢迎的选择"}
+                          {product.description || "Most Popular Choice"}
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="mt-4 flex justify-center p-0">
                         <ul className="space-y-2">
                           <li className="flex flex-row items-center">
                             <CircleCheck className="mr-2 size-4" />
-                            {`${product.credits} 积分`}
+                            {`${product.credits} Credits`}
                           </li>
                           <li className="flex flex-row items-center">
                             <CircleCheck className="mr-2 size-4" />
-                            {`可生成 ${Math.floor(product.credits / 10)} 张图片`}
+                            {`Generate ${Math.floor(product.credits / 10)} Images`}
                           </li>
                           <li className="flex flex-row items-center">
                             <CircleCheck className="mr-2 size-4" />
-                            优先客户支持
+                            Priority Support
                           </li>
                         </ul>
                       </CardContent>
@@ -118,7 +118,7 @@ export function Pricing() {
                         </div>
                         <CardDescription className="mt-2">
                           {product.description ||
-                            (index === 0 ? "入门体验" : "高级用户首选")}
+                            (index === 0 ? "Starter Experience" : "Premium User Choice")}
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="mt-4 flex justify-center p-0">
@@ -151,7 +151,7 @@ export function Pricing() {
         </div>
         <div className="mt-8 flex justify-center">
           <p className="text-sm text-gray-600">
-            所有套餐均为一次性付款，无订阅
+            All plans are one-time payments, no subscription
           </p>
         </div>
       </div>
@@ -188,7 +188,7 @@ function PricingButton({ product }: { product: Product }) {
         <LoadingDots color="#808080" />
       ) : (
         <>
-          <p>立即购买</p>
+          <p>Buy Now</p>
         </>
       )}
     </Button>
