@@ -125,16 +125,16 @@ export function Pricing() {
                         <ul className="space-y-2">
                           <li className="flex flex-row items-center">
                             <CircleCheck className="mr-2 size-4" />
-                            {`${product.credits} 积分`}
+                            {`${product.credits} Credits`}
                           </li>
                           <li className="flex flex-row items-center">
                             <CircleCheck className="mr-2 size-4" />
-                            {`可生成 ${Math.floor(product.credits / 10)} 张图片`}
+                            {`Generate ${Math.floor(product.credits / 10)} Images`}
                           </li>
                           {index === 2 && (
                             <li className="flex flex-row items-center">
                               <CircleCheck className="mr-2 size-4" />
-                              优先客户支持
+                              Priority Support
                             </li>
                           )}
                         </ul>
