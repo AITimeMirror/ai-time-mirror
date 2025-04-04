@@ -10,7 +10,7 @@ export function FAQ() {
   return (
     <div id="faq" className="flex mt-4 w-full max-w-2xl flex-col items-center justify-center px-5 xl:px-0">
       <div className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-default text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm md:text-5xl md:leading-[5rem]">
-        <Balancer>Question and Answer</Balancer>
+        <Balancer>Frequently Asked Questions</Balancer>
       </div>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
