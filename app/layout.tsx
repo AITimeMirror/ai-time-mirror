@@ -49,7 +49,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const CRISP_SCRIPT = `window.$crisp=[];window.CRISP_WEBSITE_ID="90ba947c-995a-46b5-a829-437e81c72cfa";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();`;
+const CRISP_SCRIPT = `window.$crisp=[];window.CRISP_WEBSITE_ID="${process.env.CRISP_WEBSITE_ID}";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();`;
 
 export default function RootLayout({
   children,
