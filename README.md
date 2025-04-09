@@ -62,7 +62,7 @@ https://github.com/user-attachments/assets/2ca500a6-6b35-4036-862f-b15fe0c6bdee
 
 #### 部署指南
 
-- 加入我的星球【AI变现之路-从0到N】获取更多的部署帮助。
+- 加入我的星球【AI变现之路-从0到N】获取更多的教程和部署帮助。
 
 #### ai变现之路
 
